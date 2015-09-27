@@ -3,11 +3,11 @@ var config=require("./config/config.js");
 
 var app=express();
 //Configuracion
-require("./config/express.js")(app);
+require("./config/express.js")(app, __dirname);
 
 
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname+"/public"));
+
 app.get('/', function(req, res) {
 	res.jsonp({message:"Welcome to PickYourDay!!"});
 })
