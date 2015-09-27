@@ -3,7 +3,7 @@ var config=require("./config/config.js");
 
 var app=express();
 //Configuracion
-require("./config/express.js")(app, __dirname);
+require("./config/express.js")(app);
 
 
 app.set('port', (process.env.PORT || 5000));

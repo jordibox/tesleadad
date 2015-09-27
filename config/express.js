@@ -2,9 +2,9 @@ var express = require("express");
 var morgan =require("morgan");
 var bodyParser=require("body-parser");
 var methodOverride=require("method-override");
-var favicon = require('serve-favicon');
 
-module.exports=function(app, rootname){
+
+module.exports=function(app){
 
 
     //Configuracion
@@ -22,7 +22,6 @@ module.exports=function(app, rootname){
     app.use(methodOverride());
 
 
-	app.use(favicon(rootname + '/public/favicon.ico'));
 
 
 
