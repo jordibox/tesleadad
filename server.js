@@ -9,7 +9,7 @@ require("./config/express.js")(app);
 app.set('port', (process.env.PORT || 5000));
 
 app.use(function(req, res){
-	res.jsonp({message:"Welcome to PickYourDay API!!"});
+	res.jsonp({message:"Welcome to PickYourDay"});
 });
 
 
