@@ -1,0 +1,21 @@
+{
+    "name": "pickyourday-api",
+    "version": "1.0.0",
+    "description": "pickyourday",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies":{
+
+        "express":"~4.0.0",
+        "morgan": "~1.0.0",
+        "body-parser":"~1.0.0",
+        "method-override": "~1.0.0"
+    },
+	"readme": "README.md",
+	"repository": "https://github.com/Zombispormedio/pickyourday-api.git"
+}
