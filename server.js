@@ -1,9 +1,11 @@
 var express = require("express");
-var config=require("./config/config.js");
+var C=require("./config/config.js");
 
 var app=express();
+
+
 //Configuracion
-require("./config/express.js")(app);
+require(C.config+"express.js")(app);
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -33,7 +35,7 @@ app.use("/api", router);
 
 
 
-app.listen(app.get("port"), function(){
+app.listen(app.port, function(){
     console.log("Conectado: "+app.get("port"));
 });
 

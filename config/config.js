@@ -1,16 +1,17 @@
-var config = (function () {
-    var private = {
+var private=function(value){
+    return { writable: false, configurable:true, value: value };
+};
 
-        port: 5000,
+var Config = Object.create(null);
+Config.prototype = {};
+module.exports = Object.create(Config.prototype, {
+ 
+        port: private(5000),
 
-        db:"mongodb://pickuser:claudia5@ds051990.mongolab.com:51990/pickyourdaydb"
+        db:private("mongodb://pickuser:<dbpassword>@ds051990.mongolab.com:51990/pickyourdaydb"),
+        
+        config:private(__dirname+"/config/")
+});
 
-    };
-    return {
-        get: function (name) {
-            return private[name];
-        }
-    };
-})();
 
-module.exports = config;
+
