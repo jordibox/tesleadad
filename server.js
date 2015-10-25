@@ -2,40 +2,15 @@ var express = require("express");
 var C=require("./config/config.js");
 
 var app=express();
-
-
 //Configuracion
 require(C.config+"express.js")(app);
 
-
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/', function (req, res) {
-    res.jsonp({ message: "Welcome to PickYourDay!!" });
-});
+require(C.config+"database.js")();
+require(C.routes+"routes.js")(app);
 
-
-var router=express.Router();
-
-router.route("")
-.get(function(req, res){
-    res.jsonp({message:"Welcome to PickYourDay API!!"});
-});
-
-var auth_router=express.Router();
-auth_router.route("")
-    .get(function(req, res){
-    res.jsonp({message:"Do you want register?"});
-});
-
-router.use("/oauth", auth_router);
-
-
-app.use("/api", router);
-
-
-
-app.listen(app.port, function(){
+app.listen(C.port, function(){
     console.log("Conectado: "+app.get("port"));
 });
 

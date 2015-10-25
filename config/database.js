@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
-var config=require("./config/config.js");
+var C=require("./config.js");
 
 
 module.exports=function(){
 
-    //Conexion con la base de datos
-    var mongodb=mongoose.connect(config.db).connection;
+    
+    var mongodb=mongoose.connect(C.db).connection;
 
     mongodb.on("error", function(err){
         console.log("Ha ocurrido este error durante la conexion con mongodb: "+err.message);});

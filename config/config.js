@@ -1,4 +1,4 @@
-var private=function(value){
+var priv=function(value){
     return { writable: false, configurable:true, value: value };
 };
 
@@ -6,11 +6,12 @@ var Config = Object.create(null);
 Config.prototype = {};
 module.exports = Object.create(Config.prototype, {
  
-        port: private(5000),
+        port: priv(5000),
 
-        db:private("mongodb://pickuser:<dbpassword>@ds051990.mongolab.com:51990/pickyourdaydb"),
+        db:priv("mongodb://pick:pick@ds045054.mongolab.com:45054/pickyourday"),
         
-        config:private(__dirname+"/config/")
+        config:priv("./config/"),
+        routes:priv("./routes/")
 });
 
 
