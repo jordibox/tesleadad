@@ -1,6 +1,7 @@
 var express = require("express");
 var C=require("./config/config.js");
 
+
 var app=express();
 //Configuracion
 require(C.config+"express.js")(app);

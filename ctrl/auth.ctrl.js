@@ -1,11 +1,13 @@
 
-var Auth = require("../models/auth");
+var C=require("../config/config");
+
+var Auth = require(C.models+"auth").Auth;
 
 exports.register = function (user, cb) {
 	if (!user || !user.username || !user.password) return cb("Fields not Filled");
 
 	var auth = new Auth({
-		username: user.username,
+		email: user.email,
 		password: user.password
 	});
 
@@ -19,22 +21,17 @@ exports.register = function (user, cb) {
 	exports.login=function (user, cb) {
 		
 		
-		Auth.findOne({ username: user.username }, function (err, user) {
+		Auth.findOne({ email: user.email }, function (err, user) {
 			if(err){return cb(err);}
 			
 			
 			if(!user){return cb(null, false);}
 			
 			
-			user.verifyPassword(user.password, function(err, isMatch){
-				if(err){return cb(err);}
-				
-				if(!isMatch){return cb(null, false);}
-				
-				return cb(null, user);
-			});
+			if(user.authenticate(user.password))return cb(null, user);
+			else return cb(null, false);
 			
-			cb(null, user);
+	
 		});
 
 	};

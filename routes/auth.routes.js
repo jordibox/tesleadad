@@ -6,8 +6,9 @@ router.route("")
 		res.jsonp({ message: "Do you want register?" });
 	})
 	.post(function (req, res){
-		AuthCtrl.login(req.body.user, function(err){
+		AuthCtrl.login(req.body.user, function(err, user){
 			if(err)return res.jsonp({err:err})
+			if(!user)return res.jsonp({err:"Password Not Valid"})
 			res.json({message:"Login Successfully"});
 		});
 	});
