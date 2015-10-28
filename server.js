@@ -5,13 +5,13 @@ var C=require("./config/config.js");
 var app=express();
 //Configuracion
 require(C.config+"express.js")(app);
+var port=process.env.PORT || 5000;
+app.set('port', port);
 
-app.set('port', (process.env.PORT || 5000));
-
-require(C.config+"database.js")();
+/*require(C.config+"database.js")();*/
 require(C.routes+"routes.js")(app);
 
-app.listen(C.port, function(){
+app.listen(port, function(){
     console.log("Conectado: "+app.get("port"));
 });
 
