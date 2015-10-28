@@ -16,7 +16,7 @@ module.exports = function (app) {
 
 	
 
-	//router.use("/oauth", require("./auth.routes.js"));
+	router.use("/oauth", require("./auth.routes.js"));
 
 
 	app.use("/api", router);

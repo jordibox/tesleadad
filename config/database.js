@@ -14,7 +14,7 @@ module.exports=function(){
 		});
 
     mongodb.once('open', function(){
-        console.log("Conexión con MongoDB");});
+        console.log("Conexion con MongoDB");});
 
  
 

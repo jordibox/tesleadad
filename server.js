@@ -8,7 +8,7 @@ require(C.config+"express.js")(app);
 var port=process.env.PORT || 5000;
 app.set('port', port);
 
-/*require(C.config+"database.js")();*/
+require(C.config+"database.js")();
 require(C.routes+"routes.js")(app);
 
 app.listen(port, function(){
