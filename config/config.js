@@ -20,7 +20,8 @@ var config = Object.create(Config.prototype, {
 
     port: priv(5000),
 
-    db: priv("mongodb://pick:pick@ds045054.mongolab.com:45054/pickyourday"),
+    db: priv("mongodb://pick:pick@ds048878.mongolab.com:48878/pickyourday"),
+	db_secure: priv("mongodb://127.0.0.1:27017/pickyourday"),
     root: priv(rootPath),
     config: priv_path("config/"),
     routes: priv_path("routes/"),
