@@ -55,9 +55,4 @@ AuthSchema.methods={
 	}
 }
 
-
-
-
-
-
 module.exports.Auth = mongoose.model("Auth", AuthSchema);
