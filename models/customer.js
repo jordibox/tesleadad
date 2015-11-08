@@ -8,7 +8,6 @@ var C=require("../config/config");
 var EventSchema = new Schema({
 	initDate:{
 		type: Date,
-		unique: true,
 		required: true
 	},
 	endDate:{
