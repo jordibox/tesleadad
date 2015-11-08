@@ -18,8 +18,8 @@ var AuthSchema = new Schema({
 		type: String,
 		required: true
 	},
-	salt:String
-
+	salt:String,
+	user: ObjectId
 });
 AuthSchema.virtual('password').set(function(password) {
     this._password = password;
