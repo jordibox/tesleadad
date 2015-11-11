@@ -1,5 +1,5 @@
 
-var C=require("../config/config");
+var C=require("../../config/config");
 
 var Auth = require(C.models+"auth").Auth;
 

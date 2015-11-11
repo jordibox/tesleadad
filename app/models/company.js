@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var CustomType = require("./customType.js");
 var GeolocationType = CustomType.GeolocationSchema;
 
-var C=require("../config/config");
+var C=require("../../config/config");
 
 var RatingSchema = new Schema({
 	id_customer: {

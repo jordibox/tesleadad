@@ -3,7 +3,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var GeolocationType = require("./customType.js").GeolocationSchema;
 
-var C=require("../config/config");
+var C=require("../../config/config");
 
 var EventSchema = new Schema({
 	initDate:{
