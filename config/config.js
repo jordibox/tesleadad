@@ -17,7 +17,7 @@ var priv_path=function(basename){
 var Config = Object.create(null);
 Config.prototype = {};
 var config = Object.create(Config.prototype, {
-    db: priv("mongodb://pick:pick@ds048878.mongolab.com:48878/pickyourday"),
+    db: priv("mongodb://pick:pick@ds053894.mongolab.com:53894/pickyourday"),
 	db_secure: priv("mongodb://127.0.0.1:27017/pickyourday"),
     root: priv(rootPath),
     config: priv_path("config/"),
