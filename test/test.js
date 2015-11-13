@@ -86,7 +86,6 @@ function rollback(data, cb) {
 			next();
 		}
 
-
 	}, function () {
 		console.log('Rollback done.');
 		cb();

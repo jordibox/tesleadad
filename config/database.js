@@ -9,15 +9,17 @@ module.exports=function(){
 
     mongodb.on("error", function(err){
         console.log("Ha ocurrido este error durante la conexion con mongodb: "+err.message);
-		console.log("Try to Localhost");
+	
 		
 		});
 
-    mongodb.once('open', function(){
-        console.log("Conexion con MongoDB");});
+		/*mongodb.once('open', function(){
+        console.log("Conexion con MongoDB");}
+		);
 		
 		mongodb.once('close', function(){
-        console.log("Conexion cerrada con MongoDB");});
+        console.log("Conexion cerrada con MongoDB");
+		});*/
 
  
 
