@@ -20,7 +20,8 @@ var EventSchema = new Schema({
 	},
 	description:{
 		type: String
-	}
+	},
+	dateCreated: Date
 });
 
 var PrepickSchema = new Schema({
@@ -38,7 +39,8 @@ var PrepickSchema = new Schema({
 			type: Number,
 			required: true
 		}
-	}	
+	},
+	dateCreated: Date
 });
 
 var CustomerSchema = new Schema({
@@ -68,6 +70,9 @@ var CustomerSchema = new Schema({
 		geolocation: [GeolocationType],
 	},
 	events: [EventSchema],
-	prepicks: [PrepickSchema]
+	prepicks: [PrepickSchema],
+	registerDate: Date,
+	lastAccess: Date,
+	lastUpdate: Date
 });
 module.exports = mongoose.model("Customer", CustomerSchema);

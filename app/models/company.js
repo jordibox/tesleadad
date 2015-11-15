@@ -53,12 +53,18 @@ var ServiceSchema = new Schema({
 	description: String,
 	duration: Number,
 	price: Number,
-	rating: [RatingSchema]
+	rating: [RatingSchema],
+	dateCreated: Date
 });
 
 
 var CompanySchema = new Schema({
 	cif:{
+		type: String,
+		unique: true,
+		required: true
+	},
+	emailMain:{
 		type: String,
 		unique: true,
 		required: true
@@ -86,7 +92,12 @@ var CompanySchema = new Schema({
 		required: true
 	},
 	services: [ServiceSchema],
-	customers: [{type: Schema.ObjectId, ref: "Customer"}]
+	review: [ReviewSchema],
+	customers: [{type: Schema.ObjectId, ref: "Customer"}],
+	registerDate: Date,
+	lastAccess: Date,
+	lastUpdate: Date
+	
 
 });
 module.exports = mongoose.model("Company", CompanySchema);
