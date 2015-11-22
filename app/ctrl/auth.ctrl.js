@@ -2,23 +2,34 @@
 var C=require("../../config/config");
 
 var Auth = require(C.models+"auth").Auth;
+var AuthController = {};
 
-exports.register = function (user, cb) {
-	if (!user || !user.email || !user.password) return cb("Fields not Filled");
 
-	var auth = new Auth({
-		email: user.email,
-		password: user.password
-	});
+AuthController.register = function(role){
+	return function(req, res, next){
+			var user = req.body;
+			
+			if (!user || !user.email || !user.password) return res.send("Fields not Filled");
 
-	auth.save(function (err) {
-		if (err) return cb(err);
-		cb();
-	});
+			var auth = new Auth({
+				email: user.email,
+				password: user.password,
+				role:role
+			});
+
+			auth.save(function (err) {
+				if (err) return res.jsonp(err);
+				next();
+			});
+		
+	}
 }
 
 
-	exports.login=function (u, cb) {
+
+
+
+	AuthController.login=function (u, cb) {
 		
 		
 		Auth.findOne({ email: u.email }, function (err, user) {
@@ -35,3 +46,5 @@ exports.register = function (user, cb) {
 		});
 
 	};
+	
+module.exports = AuthController;

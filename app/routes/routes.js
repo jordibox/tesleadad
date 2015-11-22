@@ -11,13 +11,13 @@ module.exports = function (app) {
 
 	router.route("")
 		.get(function (req, res) {
-			res.jsonp({ message: "Welcome to PickYourDay API!!" });
+			res.jsonp({ message: "Welcome to PickYourDay API!!!" });
 		});
 
 	
 
 	router.use("/oauth", require("./auth.routes.js"));
-
+	router.use("/customer", require("./customer.routes.js"));
 
 	app.use("/api", router);
 }

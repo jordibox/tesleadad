@@ -13,13 +13,13 @@ module.exports=function(){
 		
 		});
 
-		/*mongodb.once('open', function(){
+		mongodb.once('open', function(){
         console.log("Conexion con MongoDB");}
 		);
 		
 		mongodb.once('close', function(){
         console.log("Conexion cerrada con MongoDB");
-		});*/
+		});
 
  
 

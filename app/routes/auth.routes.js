@@ -6,20 +6,13 @@ router.route("")
 		res.jsonp({ message: "Do you want register?" });
 	})
 	.post(function (req, res){
-		AuthCtrl.login(req.body.user, function(err, user){
+		AuthCtrl.login(req.body, function(err, user){
 			if(err)return res.jsonp({err:err})
 			if(!user)return res.jsonp({err:"Password Not Valid"})
 			res.json({message:"Login Successfully"});
 		});
 	});
 	
-	router.route("/register")
-	.post(function(req, res){
-		AuthCtrl.register(req.body.user, function(err){
-			if(err)return res.jsonp({err:err})
-			res.json({message:"Registration Successfully"});
-		})
-	});
 	
 	
 	
