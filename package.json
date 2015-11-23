@@ -1,23 +1,33 @@
 {
   "name": "pickyourday-api",
   "version": "1.0.0",
-  "description": "pickyourday",
-  "main": "index.js",
-  "scripts": {
-    "test": "node ./test/test.js",
-    "start": "node server.js",
-	"devstart": "supervisor server.js"
+  "description": "pickyourday Api",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
   },
+  "dependencies": {
+    "async": "1.5.0",
+    "express": "4.0.0",
+    "body-parser": "1.0.2",
+    "method-override": "1.0.2",
+    "mongoose": "4.2.2",
+    "morgan": "1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zombispormedio/pickyourday-api.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "async": "^1.5.0",
-    "body-parser": "~1.0.0",
-    "express": "~4.0.0",
-    "method-override": "~1.0.0",
-    "mongoose": "^4.2.2",
-    "morgan": "~1.0.0"
+  "bugs": {
+    "url": "https://github.com/Zombispormedio/pickyourday-api/issues"
   },
-  "readme": "README.md",
-  "repository": "https://github.com/Zombispormedio/pickyourday-api.git"
+  "homepage": "https://github.com/Zombispormedio/pickyourday-api#readme"
 }
