@@ -1,12 +1,23 @@
 var Router = require("express").Router;
 var CustomerCtrl=require("../ctrl/customer.ctrl");
 var AuthController = require("../ctrl/auth.ctrl");
+var Response = require("../lib/response");
 var router = Router();
 router.route("")
 	.post(AuthController.register(1), function(req, res){ //request, responde, siguiente funcion(opcional)
-		CustomerCtrl.newUser(req.body, function(err, user){ //contenido del POST, function(error, return de newUser)
-			res.json({message:"Register Successfully"});//respuesta para frontEnd, siempre tiene que responder algo
+		CustomerCtrl.newUser(req.body, function(err){ //contenido del POST, function(error, return de newUser)
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", "Register Successfully");//respuesta para frontEnd, siempre tiene que responder algo	
+
 		});
+	})
+	.get(function(req, res){
+		CustomerCtrl.search(req.query, function(err, customers){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", customers);
+		} );
 	});
 	
 	

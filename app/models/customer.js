@@ -75,4 +75,27 @@ var CustomerSchema = new Schema({
 	lastAccess: Date,
 	lastUpdate: Date
 });
+
+
+CustomerSchema.statics={
+	search:function(params, cb){ //en params no meter id, todos los demas datos si
+		//var query = this.find({});
+		
+		
+		/*
+		query.exec(function(err, result){
+			
+		});
+		*/
+
+		//var filtred;	
+		cb();
+	}
+	
+	//getById //otra funcion para buscar por id
+};
+
+
+
+
 module.exports = mongoose.model("Customer", CustomerSchema);

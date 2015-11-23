@@ -14,6 +14,10 @@ Controller.newUser = function (body, cb) { //datos del body, callback
 		//cb("Error","usuario creado");
 		cb();//Retorno de la funcion newUser
 	});
+};
+
+Controller.search = function(query, cb){
+	CustomerModel.search(query,cb);
 }
 	
 module.exports = Controller;
