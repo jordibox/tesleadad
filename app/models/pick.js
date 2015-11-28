@@ -26,7 +26,8 @@ var PickSchema = new Schema({
 	observation: String,
 	state: {
 		type: String, 
-		enum: ['pending', 'active', 'cancelled', 'finished']
+		enum: ['pending', 'active', 'cancelled', 'finished'],
+		required: true
 	}
 });
 

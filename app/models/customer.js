@@ -79,17 +79,17 @@ var CustomerSchema = new Schema({
 
 CustomerSchema.statics={
 	search:function(params, cb){ //en params no meter id, todos los demas datos si
-		//var query = this.find({});
-		
-		
-		/*
-		query.exec(function(err, result){
-			
-		});
-		*/
+		var query = this.find({});
 
-		//var filtred;	
-		cb();
+		
+		query.exec(function(err, result){
+			var filtred=result;
+
+
+
+			cb(null, filtred);
+		});
+		
 	}
 	
 	//getById //otra funcion para buscar por id

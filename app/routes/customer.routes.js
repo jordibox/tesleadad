@@ -1,10 +1,11 @@
 var Router = require("express").Router;
 var CustomerCtrl=require("../ctrl/customer.ctrl");
 var AuthController = require("../ctrl/auth.ctrl");
+var PickCtrl = require("../ctrl/pick.ctrl");
 var Response = require("../lib/response");
 var router = Router();
 router.route("")
-	.post(AuthController.register(1), function(req, res){ //request, responde, siguiente funcion(opcional)
+	.post(AuthController.register(1), function(req, res){ //function(request, responde, [siguiente funcion]), es como un array de funciones,con next pasas a la siguiente
 		CustomerCtrl.newUser(req.body, function(err){ //contenido del POST, function(error, return de newUser)
 			if(err) Response.printError(res, err);
 				else
@@ -18,6 +19,15 @@ router.route("")
 				else
 			Response.printSuccess(res, "data", customers);
 		} );
+	});
+
+router.route("/newpick")
+	.post(function(req, res){
+		PickCtrl.new(req.body, function(err){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", "Pick created");
+		});
 	});
 	
 	
