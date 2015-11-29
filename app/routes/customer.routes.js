@@ -39,8 +39,19 @@ router.route("/pick")
 				else
 			Response.printSuccess(res, "data", picks);
 		} );
+	})
+
+	.delete(function(req, res){
+		PickCtrl.delete(req.body, function(err, pick){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", pick);
+
+		} );		
 	});
-	
+
+
+		
 	
 	
 	

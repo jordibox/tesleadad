@@ -30,4 +30,44 @@ Controller.search = function(query, cb){
 	});
 };
 
+Controller.delete = function(query, cb){
+
+
+	/*
+	if (!query || !query._id) return cb("Fields not Filled");
+
+	PickModel.findOne({ _id : query._id} ,  function (err, pick){
+
+	    if(err) return cb(err);
+
+	    if(!pick)
+			return cb(null, "No pick");
+
+	      pick.remove( function(err){
+	        if(err) return cb(err);	 
+	        	cb(null, "Pick deleted");      
+	      });
+
+
+
+	});
+	*/
+
+	if (!query || !query._id) return cb("Fields not Filled");
+
+	PickModel.findByIdAndRemove(query._id, function (err,pick){
+
+    	if(err) return cb(err);
+
+		if(!pick)
+			return cb(null, "No picks deleted");
+		
+		return cb(null, "Pick deleted");
+
+	})
+
+
+
+}
+
 module.exports = Controller;
