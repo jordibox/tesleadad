@@ -20,6 +20,14 @@ router.route("")
 				else
 			Response.printSuccess(res, "data", customers);
 		} );
+	})
+	.delete(function(req, res){
+		CustomerCtrl.delete(req.body, function(err, customer){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", customer);
+
+		} );		
 	});
 
 router.route("/newpick")

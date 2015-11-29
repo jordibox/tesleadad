@@ -5,7 +5,7 @@ var CustomerModel = require(C.models+"customer");
 var Controller = {};
 
 Controller.newUser = function (body, cb) { //datos del body, callback
-	
+
 	if (!body || !body.email || !body.name || !body.surname || !body.birthDate) return cb("Fields not Filled");
 
 	var customer = new CustomerModel(body);
@@ -29,4 +29,20 @@ Controller.search = function(query, cb){
 	});
 };
 	
+Controller.delete = function(query, cb){
+
+	if (!query || !query._id) return cb("Fields not Filled");
+
+	CustomerModel.findByIdAndRemove(query._id, function (err,customer){
+
+    	if(err) return cb(err);
+
+		if(!customer)
+			return cb(null, "No customer deleted");
+		
+		return cb(null, "Customer deleted");
+
+	})
+}
+
 module.exports = Controller;
