@@ -16,7 +16,7 @@ router.route("")
 		});
 	});
 	
-router.route("logout")
+router.route("/logout")
 	.get(function(req, res){
 		AuthCtrl.logout(req.headers.authorization, function(err){
 			if(err) 
