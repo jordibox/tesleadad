@@ -62,4 +62,16 @@ Controller.checkAccess=function(role){
 	
 }
 
+Controller.findById = function(id, cb){
+
+	CompanyModel.findById(id, function(err, company){
+		if(err) return cb(err);
+
+		if(!company)
+			return cb("No company found");
+		
+		return cb(null, company);
+	});
+};
+
 module.exports = Controller;

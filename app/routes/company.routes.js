@@ -20,4 +20,13 @@ router.route("")
 		});
 	});
 	
-	module.exports = router;
+router.route("/:id")
+	.get(function(req, res){
+		CompanyCtrl.findById(req.params.id, function(err, company){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", company);
+		} );
+	});
+
+module.exports = router;
