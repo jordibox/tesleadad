@@ -3,13 +3,24 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Pick Your Day Administration</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	
 </head>
-<body>
-	<form>
-		<label for="">Login</label>
-		<input type="text">
-		<label for="">Password</label>
-		<input type="password">
-	</form>
+<body ng-app="myAdmin">
+	<div ng-controller="formCtrl">
+	  <form>
+	    Email:<br>
+	    <input type="text" ng-model="user.Email"><br>
+	    Password:<br>
+	    <input type="password" ng-model="user.Password">
+	    <br><br>
+	    <button ng-click="login()">LOGIN</button>
+	    {{user.Email}}
+	  </form>
+	</div>
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>	
+	<script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
