@@ -61,16 +61,15 @@ router.route("/pick")
 		} );		
 	});
 
-/*
 router.route("/pick/:id")
 	.get(function(req, res){
-		PickCtrl.findById(req.params.id, function(err, pick) {
+		PickCtrl.findById(req.params.id, function(err, pick){
 			if(err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", pick);
 		} );
 	});
-*/
+
 		
 	
 	

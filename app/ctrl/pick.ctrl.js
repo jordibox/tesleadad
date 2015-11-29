@@ -23,14 +23,24 @@ Controller.search = function(query, cb){
 		if(err) return cb(err);
 
 		if(!picks)
-			return cb(null, "No picks");
+			return cb("No picks");
 		
 		return cb(null, picks);
 
 	});
 };
 
+Controller.findById = function(id, cb){
 
+	PickModel.findById(id, function(err, pick){
+		if(err) return cb(err);
+
+		if(!pick)
+			return cb("No pick found");
+		
+		return cb(null, pick);
+	});
+};
 
 Controller.delete = function(query, cb){
 
@@ -62,7 +72,7 @@ Controller.delete = function(query, cb){
     	if(err) return cb(err);
 
 		if(!pick)
-			return cb(null, "No picks deleted");
+			return cb("No picks deleted");
 		
 		return cb(null, "Pick deleted");
 
