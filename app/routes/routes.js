@@ -18,6 +18,8 @@ module.exports = function (app) {
 
 	router.use("/oauth", require("./auth.routes.js"));
 	router.use("/customer", require("./customer.routes.js"));
+	router.use("/system", require("./system.routes.js"));
+	router.use("/company", require("./company.routes.js"));
 
 	app.use("/api", router);
 }

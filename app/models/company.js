@@ -1,5 +1,9 @@
 var mongoose = require("mongoose");
 
+var C = require("../../config/config");
+
+var Utils = require(C.lib+"utils");
+
 var Schema = mongoose.Schema;
 var CustomType = require("./customType.js");
 var GeolocationType = CustomType.GeolocationSchema;
@@ -64,12 +68,12 @@ var CompanySchema = new Schema({
 		unique: true,
 		required: true
 	},
-	emailMain:{
+	email:{
 		type: String,
 		unique: true,
 		required: true
 	},
-	email:[String],
+	emailSecond:[String],
 	name:{
 		type: String,
 		required: true
@@ -100,4 +104,17 @@ var CompanySchema = new Schema({
 	
 
 });
+
+CompanySchema.statics={
+	search:function(params, cb){ //en params no meter id, todos los demas datos si
+		var query = this.find({});
+		for(var key in params){
+			query.where(key).equals(Utils.like(params[key]));
+		}
+		
+		query.exec(cb);
+		
+	}
+
+};
 module.exports = mongoose.model("Company", CompanySchema);
