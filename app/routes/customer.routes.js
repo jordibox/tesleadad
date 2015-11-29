@@ -1,8 +1,9 @@
 var Router = require("express").Router;
-var CustomerCtrl=require("../ctrl/customer.ctrl");
-var AuthController = require("../ctrl/auth.ctrl");
-var PickCtrl = require("../ctrl/pick.ctrl");
-var Response = require("../lib/response");
+var C = require("../../config/config");
+var CustomerCtrl=require(C.ctrl+"customer.ctrl");
+var AuthController = require(C.ctrl+"auth.ctrl");
+var PickCtrl = require(C.ctrl+"pick.ctrl");
+var Response = require(C.lib+"response");
 var router = Router();
 
 router.route("")

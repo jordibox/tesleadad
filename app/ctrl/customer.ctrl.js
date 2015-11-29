@@ -7,7 +7,7 @@ var Controller = {};
 Controller.newUser = function (body, cb) { //datos del body, callback
 
 	if (!body || !body.email || !body.name || !body.surname || !body.birthDate) return cb("Fields not Filled");
-
+	
 	var customer = new CustomerModel(body);
 
 	customer.save(function (err) {

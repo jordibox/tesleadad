@@ -6,25 +6,26 @@ var rootfunc = function (basename) {
 };
 
 
-var priv = function (value) {
+var secure = function (value) {
     return { writable: false, configurable: true, value: value };
 };
 
-var priv_path=function(basename){
-    return priv(rootfunc(basename));
+var secure_path=function(basename){
+    return secure(rootfunc(basename));
 }
 
 var Config = Object.create(null);
 Config.prototype = {};
 var config = Object.create(Config.prototype, {
-    db: priv("mongodb://pick:pick@ds053894.mongolab.com:53894/pickyourday"),
-	db_secure: priv("mongodb://127.0.0.1:27017/pickyourday"),
-    root: priv(rootPath),
-    config: priv_path("config/"),
-    routes: priv_path("app/routes/"),
-    lib:priv_path("app/lib/"),
-    models:priv_path("app/models/"),
-    ctrl:priv_path("app/ctrl/")
+    db: secure("mongodb://pick:pick@ds053894.mongolab.com:53894/pickyourday"),
+	db_secure: secure("mongodb://127.0.0.1:27017/pickyourday"),
+    root: secure(rootPath),
+    config: secure_path("config/"),
+    routes: secure_path("app/routes/"),
+    lib:secure_path("app/lib/"),
+    models:secure_path("app/models/"),
+    ctrl:secure_path("app/ctrl/"),
+	secret:secure("pickyourday")
 });
 
 

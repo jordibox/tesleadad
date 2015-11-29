@@ -1,5 +1,7 @@
 var Router = require("express").Router;
-var AuthCtrl=require("../ctrl/auth.ctrl");
+var C = require("../../config/config");
+var AuthCtrl=require(C.ctrl+"auth.ctrl");
+var Response = require(C.lib+"response");
 var router = Router();
 router.route("")
 	.get(function (req, res) {
@@ -7,16 +9,11 @@ router.route("")
 	})
 	.post(function (req, res){
 		AuthCtrl.login(req.body, function(err, user){
-			if(err)return res.jsonp({err:err})
-			if(!user)return res.jsonp({err:"Password Not Valid"})
-			res.json({message:"Login Successfully"});
+			if(err) 
+				Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", user);
 		});
 	});
-	
-	
-	
-	
-	
-
 
 module.exports = router;
