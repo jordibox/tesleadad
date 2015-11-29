@@ -1,0 +1,3 @@
+adminCtrl.LoginCtrl=function($scope){
+	
+}
