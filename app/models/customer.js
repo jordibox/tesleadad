@@ -120,8 +120,7 @@ CustomerSchema.statics={
 		query.exec(cb);
 		
 	}
-	
-	//getById //otra funcion para buscar por id
+
 };
 
 

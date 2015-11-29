@@ -28,6 +28,17 @@ Controller.search = function(query, cb){
 
 	});
 };
+
+Controller.findById = function(id, cb){
+	CustomerModel.findById(id, function(err, customer){
+		if(err)return cb(err);
+
+		if(!customer)
+			return cb(null, "No user");
+
+		return cb(null, customer);
+	});
+}
 	
 Controller.delete = function(query, cb){
 

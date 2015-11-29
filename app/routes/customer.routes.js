@@ -31,6 +31,15 @@ router.route("")
 		} );		
 	});
 
+router.route("/:id").
+	get(function(req, res){
+		CustomerCtrl.findById(req.params.id, function(err, customer){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", customer);
+		});
+	});
+
 router.route("/pick")
 	.post(function(req, res){
 		PickCtrl.new(req.body, function(err){
