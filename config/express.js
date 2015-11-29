@@ -2,7 +2,7 @@ var express = require("express");
 var morgan = require("morgan");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
-
+var cors=require("cors");
 
 module.exports = function (app) {
 
@@ -20,11 +20,7 @@ module.exports = function (app) {
 
     //Simula delete y put
     app.use(methodOverride());
-    app.use(function (req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        next();
-    });
+    app.use(cors());
 
 
 
