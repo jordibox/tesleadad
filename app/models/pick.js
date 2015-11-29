@@ -37,7 +37,7 @@ var PickSchema = new Schema({
 PickSchema.statics={
 	search:function(params, cb){ //en params no meter id, todos los demas datos si
 		var query = this.find({});
-		
+		console.log(query);
 		for(var key in params){
 
 			switch(key){

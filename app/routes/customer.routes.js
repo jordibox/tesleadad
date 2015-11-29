@@ -31,17 +31,12 @@ router.route("")
 		} );		
 	});
 
-router.route("/:id").
-	get(function(req, res){
-		CustomerCtrl.findById(req.params.id, function(err, customer){
-			if(err) Response.printError(res, err);
-			else
-				Response.printSuccess(res, "data", customer);
-		});
-	});
+
+
 
 router.route("/pick")
 	.post(function(req, res){
+
 		PickCtrl.new(req.body, function(err){
 			if(err) Response.printError(res, err);
 				else
@@ -50,6 +45,7 @@ router.route("/pick")
 	})
 	
 	.get(function(req, res){
+		console.log("df");
 		PickCtrl.search(req.query, function(err, picks){
 			if(err) Response.printError(res, err);
 			else if(picks.length == 0)
@@ -68,6 +64,7 @@ router.route("/pick")
 		} );		
 	});
 
+
 router.route("/pick/:id")
 	.get(function(req, res){
 		PickCtrl.findById(req.params.id, function(err, pick){
@@ -77,33 +74,13 @@ router.route("/pick/:id")
 		} );
 	});
 
-		
-	
-	
-	
-	/*.get(function (req, res) {
-		res.jsonp({ message: "Do you want register?" });
-	})
-	.post(function (req, res){
-		AuthCtrl.login(req.body.user, function(err, user){
-			if(err)return res.jsonp({err:err})
-			if(!user)return res.jsonp({err:"Password Not Valid"})
-			res.json({message:"Login Successfully"});
+router.route("/:id")
+	.get(function(req, res){
+		CustomerCtrl.findById(req.params.id, function(err, customer){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", customer);
 		});
 	});
-	
-	router.route("/register")
-	.post(function(req, res){
-		AuthCtrl.register(req.body.user, function(err){
-			if(err)return res.jsonp({err:err})
-			res.json({message:"Registration Successfully"});
-		})
-	});*/
-	
-	
-	
-	
-	
-
 
 module.exports = router;
