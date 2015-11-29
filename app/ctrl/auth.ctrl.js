@@ -67,14 +67,16 @@ AuthController.checkAccess=function(role){
 		if(!token)return Response.printError(res,"No Authorization");
 		AuthModel.findByToken(token, function(err,user){
 			if(err)return Response.printError(res, err);
-			
 			if(user.role!==role || user.role!==0) return Response.printError(res,"No Authorization");
-	
 			req.user=user;
 			next();
 		});
 	}
 }
 
+AuthController.logout=function(token, cb){
+	if(!token)return cb("No Token");
+	AuthModel.removeToken(token, cb);
+}
 
 module.exports = AuthController;

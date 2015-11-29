@@ -80,6 +80,20 @@ AuthSchema.statics={
 			if(!result)return cb("No Authorization")
 			cb(null, result);
 		});
+	},
+	removeToken:function(token, cb){
+	this.findOne({ email:Utils.verify(token).email, token: { "$in" : [token]} }, function(err, result){
+			if(err)return cb(err);
+			if(!result)return cb("No Authorization");
+			
+			var index=result.token.indexOf(token);
+			result.token.splice(index,1);
+			result.save(function(err){
+				if(err)return cb(err);
+				cb();
+			})
+			
+		});
 	}
 
 }

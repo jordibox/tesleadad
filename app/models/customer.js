@@ -56,15 +56,15 @@ var CustomerSchema = new Schema({
 	},
 	name:{
 		type: String,
-		required: true
+		
 	}, 
 	surname:{
 		type: String,
-		required: true
+		
 	},	
 	birthDate:{
 		type:Date,
-		required: true
+		
 	},
 	location:{
 		country: String,

@@ -16,9 +16,16 @@ router.route("")
 		});
 	});
 	
-router.route("/access")
-	.get(AuthCtrl.checkAccess(2), function(req, res){
-		Response.printSuccess(res, "data", "Have Access");
-	})
+router.route("logout")
+	.get(function(req, res){
+		AuthCtrl.logout(req.headers.authorization, function(err){
+			if(err) 
+				Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Successful");
+		});
+	});
+	
+
 
 module.exports = router;
