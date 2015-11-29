@@ -8,6 +8,7 @@ require(C.config+"express.js")(app);
 var port=process.env.PORT || 5000;
 app.set('port', port);
 
+app.use("/admin", express.static(__dirname+"/public"));
 
 require(C.config+"database.js")();
 

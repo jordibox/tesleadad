@@ -5,7 +5,7 @@ module.exports = function (app) {
 	app.get('/', function (req, res) {
 		res.jsonp({ message: "Welcome to PickYourDay!!" });
 	});
-
+	
 
 	var router = express.Router();
 
