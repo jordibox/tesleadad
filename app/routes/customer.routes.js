@@ -31,17 +31,15 @@ router.route("")
 		} );		
 	});
 
-router.route("/newpick")
+router.route("/pick")
 	.post(function(req, res){
 		PickCtrl.new(req.body, function(err){
 			if(err) Response.printError(res, err);
 				else
 			Response.printSuccess(res, "data", "Pick created");
 		});
-	});
-
-
-router.route("/pick")
+	})
+	
 	.get(function(req, res){
 		PickCtrl.search(req.query, function(err, picks){
 			if(err) Response.printError(res, err);
