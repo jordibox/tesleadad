@@ -83,7 +83,39 @@ CustomerSchema.statics={
 	search:function(params, cb){ //en params no meter id, todos los demas datos si
 		var query = this.find({});
 		for(var key in params){
-			query.where(key).equals(Utils.like(params[key]));
+			
+			switch(key){
+				case 'beforeBirthDate':
+					query.where('birthDate').lt(params[key]);
+					break;
+				case 'afterBirthDate':
+					query.where('birthDate').gt(params[key]);
+					break; 
+
+				case 'beforeRegister':
+					query.where('registerDate').lt(params[key]);
+					break;
+				case 'afterRegister':
+					query.where('registerDate').gt(params[key]);
+					break; 
+
+				case 'beforeLastUpdate':
+					query.where('lastUpdate').lt(params[key]);
+					break;
+				case 'afterLastUpdate':
+					query.where('lastUpdate').gt(params[key]);
+					break; 
+					
+				case 'beforeAccess':
+					query.where('lastAccess').lt(params[key]);
+					break;
+				case 'afterAccess':
+					query.where('lastAccess').gt(params[key]);
+					break;
+				default:query.where(key).equals(Utils.like(params[key]));
+
+			}
+
 		}	
 		query.exec(cb);
 		
