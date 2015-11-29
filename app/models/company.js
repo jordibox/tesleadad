@@ -95,6 +95,7 @@ var CompanySchema = new Schema({
 		ref: "Category",
 		required: true
 	},
+	promotions: [PromotionSchema],
 	services: [ServiceSchema],
 	review: [ReviewSchema],
 	customers: [{type: Schema.ObjectId, ref: "Customer"}],

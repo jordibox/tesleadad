@@ -2,7 +2,6 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var C=require("../../config/config");
-var Utils=require(C.lib+"utils");
 
 var HistoryPickSchema = new Schema({
 	id_customer: { 
@@ -16,19 +15,10 @@ var HistoryPickSchema = new Schema({
 			ref: "Company",
 			required: true
 		},
-		id_service:{		
-			type: Number,
-			required: true
-		}
+		id_service: Number
 	},
-	initDate: {
-		type: Date,
-		required: true
-	},
-	endDate: {
-		type: Date,
-		required: true
-	},
+	initDate: Date,
+	deletedDate: Date,
 	observation: String,
 	state: {
 		type: String, 

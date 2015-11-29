@@ -61,9 +61,6 @@ PickSchema.statics={
 		
 	}
 
-
 };
-
-
 
 module.exports = mongoose.model("Pick", PickSchema);
