@@ -5,6 +5,8 @@ var GeolocationType = require("./customType.js").GeolocationSchema;
 
 var C=require("../../config/config");
 
+var Utils=require(C.lib+"utils");
+
 var EventSchema = new Schema({
 	initDate:{
 		type: Date,
@@ -80,15 +82,10 @@ var CustomerSchema = new Schema({
 CustomerSchema.statics={
 	search:function(params, cb){ //en params no meter id, todos los demas datos si
 		var query = this.find({});
-
-		
-		query.exec(function(err, result){
-			var filtred=result;
-
-
-
-			cb(null, filtred);
-		});
+		for(var key in params){
+			query.where(key).equals(Utils.like(params[key]));
+		}	
+		query.exec(cb);
 		
 	}
 	
