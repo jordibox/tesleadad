@@ -36,8 +36,10 @@ router.route("/pick")
 	.get(function(req, res){
 		PickCtrl.search(req.query, function(err, picks){
 			if(err) Response.printError(res, err);
-				else
-			Response.printSuccess(res, "data", picks);
+			else if(picks.length == 0)
+				Response.printError(res, "No picks");
+			else
+				Response.printSuccess(res, "data", picks);
 		} );
 	})
 
