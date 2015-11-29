@@ -39,7 +39,16 @@ PickSchema.statics={
 		var query = this.find({});
 		
 		for(var key in params){
-			query.where(key).equals(Utils.like(params[key]));
+
+			switch(key){
+				case "id_customer":  
+				case "company.id_company":
+				case "id_service":
+					query.where(key).equals(params[key].toString());
+					break;				
+				default:
+					query.where(key).equals(Utils.like(params[key]));
+			}
 		}	
 		query.exec(cb);
 		
