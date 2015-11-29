@@ -31,4 +31,18 @@ var PickSchema = new Schema({
 	}
 });
 
+
+PickSchema.statics={
+	search:function(params, cb){ //en params no meter id, todos los demas datos si
+		var query = this.find({});
+		
+		query.exec(function(err, result){
+			var filtred=result;
+
+			cb(null, filtred);
+		});
+		
+	}
+};
+
 module.exports = mongoose.model("Pick", PickSchema);

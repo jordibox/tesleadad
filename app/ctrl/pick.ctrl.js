@@ -17,4 +17,17 @@ Controller.new = function(body, cb){
 	});
 };
 
+Controller.search = function(query, cb){
+
+	PickModel.search(query, function(err, picks){
+		if(err) return cb(err);
+
+		if(!picks)
+			return cb(null, "No picks");
+		
+		return cb(null, picks);
+
+	});
+};
+
 module.exports = Controller;

@@ -4,6 +4,7 @@ var AuthController = require("../ctrl/auth.ctrl");
 var PickCtrl = require("../ctrl/pick.ctrl");
 var Response = require("../lib/response");
 var router = Router();
+
 router.route("")
 	.post(AuthController.register(1), function(req, res){ //function(request, responde, [siguiente funcion]), es como un array de funciones,con next pasas a la siguiente
 		CustomerCtrl.newUser(req.body, function(err){ //contenido del POST, function(error, return de newUser)
@@ -28,6 +29,16 @@ router.route("/newpick")
 				else
 			Response.printSuccess(res, "data", "Pick created");
 		});
+	});
+
+
+router.route("/pick")
+	.get(function(req, res){
+		PickCtrl.search(req.query, function(err, picks){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", picks);
+		} );
 	});
 	
 	

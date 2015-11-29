@@ -25,10 +25,6 @@ AuthController.register = function(role){
 	}
 }
 
-
-
-
-
 	AuthController.login=function (u, cb) {
 		
 		

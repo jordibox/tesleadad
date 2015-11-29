@@ -22,6 +22,7 @@ var AuthSchema = new Schema({
 	role: Number
 	//user: {type: Schema.Types.ObjectId}
 });
+
 AuthSchema.virtual('password').set(function(password) {
     this._password = password;
     this.salt = this.makeSalt();
