@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var jwt = require('jsonwebtoken');
+
 var Schema = mongoose.Schema;
 var crypto = require("crypto")
 var C = require("../../config/config");
@@ -51,7 +51,7 @@ AuthSchema.methods = {
 			return cb("Password not Valid");
 		}
 		
-		var token =this.sign({
+		var token =Utils.sign({
             email: u.email,
             role:u.role
         });
@@ -67,17 +67,20 @@ AuthSchema.methods = {
 	encryptPassword: function (password) {
 		if (!password) return "";
 		return crypto.createHmac("sha1", this.salt).update(password).digest("hex");
-	},
-	sign: function (data) {
-		data.created = new Date().getTime();
-		return jwt.sign(data, C.secret);
-	},
-
-	verify: function (data) {
-		return jwt.verify(data, C.secret);
 	}
+	
+}
 
 
+AuthSchema.statics={
+	
+	findByToken:function(token, cb){
+		this.findOne({ email:Utils.verify(token).email, token: { "$in" : [token]} }, function(err, result){
+			if(err)return cb(err);
+			if(!result)return cb("No Authorization")
+			cb(null, result);
+		});
+	}
 
 }
 

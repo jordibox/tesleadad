@@ -15,5 +15,10 @@ router.route("")
 				Response.printSuccess(res, "data", user);
 		});
 	});
+	
+router.route("/access")
+	.get(AuthCtrl.checkAccess(2), function(req, res){
+		Response.printSuccess(res, "data", "Have Access");
+	})
 
 module.exports = router;
