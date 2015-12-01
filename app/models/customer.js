@@ -145,7 +145,7 @@ CustomerSchema.statics={
 			//console.log("query= ", query);
 			
 			var query = this.find({});
-var query= this.findOne({'events.name': "Evento de prueba2"});
+var query= this.findOne({'events.name': "evento de prueba2"});
 
 			//var query = this.find({'CustomerSchema.event': {$elemMatch: {}}});
 			/*for(var key in params){
