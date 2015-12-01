@@ -63,7 +63,7 @@ router.route("/pick")
 	});
 
 router.route("/event")
-	.post(AuthController.checkAccess(1), function(req, res){		
+	.post(AuthController.checkAccess(1), function(req, res){	
 		EventCtrl.newEvent(req.user, req.body, function(err){
 			if(err) Response.printError(res, err);
 				else
