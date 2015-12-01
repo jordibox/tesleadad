@@ -1,6 +1,6 @@
 var C=require("../../config/config");
 
-var CustomerModel = require(C.models+"event");
+var CustomerModel = require(C.models+"customer");
 var Controller = {};
 
 Controller.newEvent = function(user, body, cb){
