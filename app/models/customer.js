@@ -143,8 +143,8 @@ CustomerSchema.statics={
 			if(!user) return cb(null, "User not found");
 			//var query = this.find({});	
 			//console.log("query= ", query);
-			console.log(params);
-			var query = this.find({}, {_id: 0, s: {$elemMatch: {name: params.name}}})
+			
+			var query = this.find({});
 			//var query = this.find({'CustomerSchema.event': {$elemMatch: {}}});
 			/*for(var key in params){
 				query.where(key).equals(Utils.like(params[key]));
