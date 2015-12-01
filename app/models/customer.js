@@ -139,11 +139,17 @@ CustomerSchema.statics={
 
 	searchEvent:function(user, params, cb){
 
-
+ this.findById('56521f87dd8ca12c0ae69ec4')
+         .populate(events,{name: "evento de prueba2"})
+         .exec(function(err, doc){
+                console.log("User List data: %j", doc);
+                cb(null, doc);       
+          });  
 					this.findById('56521f87dd8ca12c0ae69ec4')
 			.populate('events')
 			.exec(function(err, doc){
 				console.log("Documentos=", doc);
+
 			});
 
 
