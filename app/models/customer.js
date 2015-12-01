@@ -151,6 +151,7 @@ CustomerSchema.statics={
 
 	}
 
+}
 
 
 
