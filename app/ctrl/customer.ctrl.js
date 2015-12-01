@@ -17,17 +17,6 @@ Controller.newUser = function (body, cb) { //datos del body, callback
 	});
 };
 
-Controller.newEvent = function(user, body, cb){
-	if(!body || !body.initDate || !body.endDate || !body.name )
-		return cb("Fields not filled");
-
-	CustomerModel.newEvent(user, body, function(err){
-		if(err) return cb(err);
-		cb();
-	});
-
-};
-
 
 
 Controller.search = function(query, cb){
@@ -37,7 +26,7 @@ Controller.search = function(query, cb){
 		if(!customers)
 			return cb(null, "No users");
 		
-		return cb(null, customers);
+		cb(null, customers);
 
 	});
 };
