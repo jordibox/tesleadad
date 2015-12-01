@@ -9,16 +9,13 @@ var Utils=require(C.lib+"utils");
 
 var EventSchema = new Schema({
 	initDate:{
-		type: Date,
-		required: true
+		type: Date
 	},
 	endDate:{
-		type: Date,
-		required: true
+		type: Date
 	}, 
 	name:{
-		type: String,
-		required: true
+		type: String
 	},
 	description:{
 		type: String
@@ -119,7 +116,29 @@ CustomerSchema.statics={
 		}	
 		query.exec(cb);
 		
+	},
+
+	newEvent:function(user, params, cb){		
+		this.findOneAndUpdate({email: user.email},{$push:{"events":{}}}, {safe:true, upsert:true, new:true}, function(err, customer){
+			if(err)return cb(err);
+			if(!customer)return cb("User not found");
+			var event = customer.events[customer.events.length-1];
+			event.name = params.name;
+			event.initDate = params.initDate;
+			event.endDate = params.endDate;
+			event.description = params.description;
+			event.dateCreated = new Date();
+			customer.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+			
+		});
 	}
+
+
+
 
 };
 

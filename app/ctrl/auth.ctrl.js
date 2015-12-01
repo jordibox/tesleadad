@@ -63,11 +63,14 @@ AuthController.login = function (u, cb) {
 
 AuthController.checkAccess=function(role){
 	return function (req, res, next) {
+
 		var token = req.headers.authorization;
 		if(!token)return Response.printError(res,"No Authorization");
 		AuthModel.findByToken(token, function(err,user){
+
 			if(err)return Response.printError(res, err);
-			if(user.role!==role || user.role!==0) return Response.printError(res,"No Authorization");
+			if(user.role!==role && user.role!==0) return Response.printError(res,"No Authorization");
+			
 			req.user=user;
 			next();
 		});

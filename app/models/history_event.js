@@ -10,5 +10,5 @@ var HistoryPickSchema = new Schema({
 	name:String,
 	description: String,
 	dateCreated: Date,
-	id_customer: Scheme.ObjectId;
+	id_customer: Scheme.ObjectId
 });

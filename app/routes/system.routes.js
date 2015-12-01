@@ -18,7 +18,9 @@ router.route("/category")
 			Response.printSuccess(res, "data", "Create Category Successfully");
 
 		});
-	})
+	});
+
+	
 	
 	
 	

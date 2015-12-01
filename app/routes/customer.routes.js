@@ -43,7 +43,6 @@ router.route("/pick")
 	})
 	
 	.get(function(req, res){
-		console.log("df");
 		PickCtrl.search(req.query, function(err, picks){
 			if(err) Response.printError(res, err);
 			else if(picks.length == 0)
@@ -61,6 +60,23 @@ router.route("/pick")
 
 		} );		
 	});
+
+router.route("/event")
+	.post(AuthController.checkAccess(1), function(req, res){
+		
+		CustomerCtrl.newEvent(req.user, req.body, function(err){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", "Event created");
+		})
+	})
+	/*.post(function(req, res){
+		EventCtrl.newEvent(req.body, function(err){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", "Event created");
+		});
+	})*/
 
 
 router.route("/pick/:id")
