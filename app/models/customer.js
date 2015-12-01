@@ -137,7 +137,7 @@ CustomerSchema.statics={
 		});
 	},
 
-	search:function(user, params, cb){
+	searchEvent:function(user, params, cb){
 		this.findOne({email: user.email}, function(err, user){
 			if(err) return cb(err);
 			if(!user) return cb("User not found");	
