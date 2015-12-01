@@ -14,8 +14,8 @@ Controller.newEvent = function(user, body, cb){
 
 };
 
-Controller.searchEvent = function(user, body, cb){
-	CustomerModel.search(user, body, function(err, events){
+Controller.search = function(user, body, cb){
+	CustomerModel.searchEvent(user, body, function(err, events){
 		if(err) return cb(err);
 
 		if(!events)
