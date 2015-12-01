@@ -146,10 +146,10 @@ CustomerSchema.statics={
 				query.where(key).equals(Utils.like(params[key]));
 			}
 			query.exec(cb);
-	});
+		});
 
+	}
 
-};
 
 
 
