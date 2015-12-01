@@ -121,7 +121,7 @@ CustomerSchema.statics={
 	newEvent:function(user, params, cb){		
 		this.findOneAndUpdate({email: user.email},{$push:{"events":{}}}, {safe:true, upsert:true, new:true}, function(err, customer){
 			if(err)return cb(err);
-			if(!customer)return cb("User not found");
+			if(!customer)return cb(null, "User not found");
 			var event = customer.events[customer.events.length-1];
 			event.name = params.name;
 			event.initDate = params.initDate;
@@ -140,9 +140,10 @@ CustomerSchema.statics={
 	searchEvent:function(user, params, cb){
 		this.findOne({email: user.email}, function(err, user){
 			if(err) return cb(err);
-			if(!user) return cb("User not found");
+			if(!user) return cb(null, "User not found");
 			//var query = this.find({});	
 			//console.log("query= ", query);
+			console.log(params);
 			var query = this.find({}, {_id: 0, s: {$elemMatch: {name: params.name}}})
 			//var query = this.find({'CustomerSchema.event': {$elemMatch: {}}});
 			/*for(var key in params){
