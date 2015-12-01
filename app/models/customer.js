@@ -140,13 +140,14 @@ CustomerSchema.statics={
 	search:function(user, params, cb){
 		this.findOne({email: user.email}, function(err, user){
 			if(err) return cb(err);
-			if(!user) return cb("User not found");
-			var query = this.find({'CustomerSchema.events': {$elemMatch: {}}}); 
-			for(var key in params){
+			if(!user) return cb("User not found");	
+			var query = this.find({'CustomerSchema.event': {$elemMatch: {}}});
+			/*for(var key in params){
 				query.where(key).equals(Utils.like(params[key]));
-			}
+			}*/
 			query.exec(cb);
 		});
+
 
 	}
 
