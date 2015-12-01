@@ -142,8 +142,10 @@ CustomerSchema.statics={
 			if(err) return cb(err);
 			if(!user) return cb(null, "User not found");
 var query = this.find({});
-			user.populate('events').exec(function(err, doc){
-				console.log(doc);
+			this.findById(user._id)
+			.populate('events')
+			.exec(function(err, doc){
+				console.log("Documentos=", doc);
 			});
 
 			//var query = this.find({});	
