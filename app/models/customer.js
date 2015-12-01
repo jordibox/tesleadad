@@ -141,10 +141,15 @@ CustomerSchema.statics={
 		this.findOne({email: user.email}, function(err, user){
 			if(err) return cb(err);
 			if(!user) return cb(null, "User not found");
+var query = this.find({});
+			user.populate('events').exec(function(err, doc){
+				console.log(doc);
+			});
+
 			//var query = this.find({});	
 			//console.log("query= ", query);
 
-			var query = this.find({email: user.email, 'events.name' : "evento de prueba2"   });
+			//var query = this.find({email: user.email, 'events.name' : "evento de prueba2"   });
 			//var query= this.findOne({'events.name': "evento de prueba2"});
 
 			//var query = this.find({'CustomerSchema.event': {$elemMatch: {}}});
