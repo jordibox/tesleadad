@@ -150,7 +150,20 @@ CustomerSchema.statics={
 					var date = new Date(params[key]);
 					query.match({'events.initDate':   { '$gte':  new Date(params[key])}});
 					break; 
-				//default: query.match({'events[key]':"evento de prueba2"});
+				case 'beforeEndDate':
+					query.match({'events.endDate': {'$lte': new Date(params[key])}});
+					break;
+				case 'afterEndDate':
+					query.match({'events.endDate': {'$gte': new Date(params[key])}});
+					break;
+				case 'beforeDateCreated':
+					query.match({'events.dateCreated': {'$lte': new Date(params[key])}});
+					break;
+				case 'afterDateCreated':
+					query.match({'events.dateCreated': {'$gte': new Date(params[key])}});
+					break;
+				case 'name': query.match({'events.name': Utils.like(params[key])});
+				break;
 
 			}
 		}
@@ -171,6 +184,40 @@ CustomerSchema.statics={
 		});
 
 */
+	},
+
+	findEventById: function(user, id, cb){
+
+		this.findOne({email: user.email}, function(err, customer){
+			if(err) return cb(err);
+
+		    if(!customer)
+				return cb("Customer not found");
+
+			var event = customer.events.id(id);
+			if(!event)
+				return cb("Event not found");
+			cb(null, event);
+
+		})
+	},
+
+	deleteEvent: function(user, id, cb){
+		this.findOne({email: user.email}, function(err, customer){
+			if(err) return cb(err);
+
+		    if(!customer)
+				return cb("Customer not found");
+
+			;
+			if(!customer.events.id(id))
+				return cb("Event not found");
+			customer.events.id(id).remove();
+			customer.save(function(err){
+				if(err) return cb(err);
+				cb();
+			})
+		})
 	}
 
 }

@@ -79,6 +79,23 @@ router.route("/event")
 		})
 	})
 
+	.delete(AuthController.checkAccess(1), function	(req, res){
+		EventCtrl.delete(req.user, req.body, function(err){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", "Event deleted");
+		})
+	})
+
+
+router.route("/event/:id")
+	.get(AuthController.checkAccess(1),function(req, res){
+		EventCtrl.findById(req.user, req.params.id, function(err, event){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", event);
+		});
+	});
 
 router.route("/pick/:id")
 	.get(function(req, res){
