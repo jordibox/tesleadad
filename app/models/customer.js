@@ -231,15 +231,31 @@ CustomerSchema.statics={
 		    if(!customer)
 				return cb("Customer not found");
 
-			;
 			if(!customer.events.id(id))
 				return cb("Event not found");
+
 			customer.events.id(id).remove();
 			customer.save(function(err){
 				if(err) return cb(err);
 				cb();
 			})
 		})
+	},
+
+	newPrePick: function(customerEmail, params, cb){
+		this.findOneAndUpdate({email: customerEmail},{$push:{"prepicks":{}}}, {safe:true, upsert:true, new:true}, function(err, customer){
+			if(err)return cb(err);
+
+			var prePick = customer.prepicks[customer.prepicks.length-1];
+			prePick.date = params.date;
+			prePick.company.id_service = params.id_service;
+			prePick.company.id_company = params.id_company;
+			prePick.dateCreated = new Date();
+			customer.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+		});
 	}
 
 }

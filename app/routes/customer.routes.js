@@ -1,10 +1,12 @@
 var Router = require("express").Router;
 var C = require("../../config/config");
-var CustomerCtrl = require(C.ctrl + "customer.ctrl");
-var AuthController = require(C.ctrl + "auth.ctrl");
-var PickCtrl = require(C.ctrl + "pick.ctrl");
-var EventCtrl = require(C.ctrl + "event.ctrl");
-var Response = require(C.lib + "response");
+
+var CustomerCtrl=require(C.ctrl+"customer.ctrl");
+var AuthController = require(C.ctrl+"auth.ctrl");
+var PickCtrl = require(C.ctrl+"pick.ctrl");
+var EventCtrl = require(C.ctrl+"event.ctrl");
+var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
+var Response = require(C.lib+"response");
 var router = Router();
 
 router.route("")
@@ -99,6 +101,14 @@ router.route("/event")
 		})
 	});
 
+router.route("/prePick")
+	.get(AuthController.checkAccess(1),function(req, res){
+	PrePickCtrl.search(req.user, req.query, function(err, events){
+		if(err) Response.printError(res, err);
+			else
+		Response.printSuccess(res, "data", events);
+	})
+})
 
 
 
