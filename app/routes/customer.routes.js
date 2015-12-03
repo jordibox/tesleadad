@@ -23,6 +23,7 @@ router.route("")
 			Response.printSuccess(res, "data", customers);
 		});
 	})
+
 	.delete(function(req, res){
 		CustomerCtrl.delete(req.body, function(err, customer){
 			if(err) Response.printError(res, err);
@@ -78,7 +79,6 @@ router.route("/event")
 			Response.printSuccess(res, "data", events);
 		})
 	})
-
 	.delete(AuthController.checkAccess(1), function	(req, res){
 		EventCtrl.delete(req.user, req.body, function(err){
 			if(err) Response.printError(res, err);
@@ -95,7 +95,14 @@ router.route("/event/:id")
 			else
 				Response.printSuccess(res, "data", event);
 		});
-	});
+	})
+	.put(AuthController.checkAccess(1), function(req, res){
+		EventCtrl.modify(req.user, req.params.id, req.body, function(err){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", "Event modified");
+		});
+	})
 
 router.route("/pick/:id")
 	.get(function(req, res){

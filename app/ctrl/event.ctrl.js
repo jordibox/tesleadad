@@ -41,8 +41,18 @@ Controller.delete = function(user, body, cb){
 	CustomerModel.deleteEvent(user, body._id, function(err){
 		if(err) return cb(err);		
 		cb();
-	})
-}
+	});
+};
+
+Controller.modify = function(user, id, body,cb){
+	if(!body || !id )
+		return cb("Fields not filled");
+
+	CustomerModel.modifyEvent(user, id, body, function(err){
+		if(err) return cb(err);		
+		cb();
+	});
+};
 
 
 module.exports = Controller;

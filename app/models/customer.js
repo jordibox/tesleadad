@@ -162,7 +162,10 @@ CustomerSchema.statics={
 				case 'afterDateCreated':
 					query.match({'events.dateCreated': {'$gte': new Date(params[key])}});
 					break;
-				case 'name': query.match({'events.name': Utils.like(params[key])});
+				default : 
+					var field = "events."+key;
+
+				query.match({'events.'+key: Utils.like(params[key])});
 				break;
 
 			}
@@ -200,6 +203,27 @@ CustomerSchema.statics={
 			cb(null, event);
 
 		})
+	},
+
+	modifyEvent: function(user, id, params, cb){
+		this.findOne({email: user.email}, function(err, customer){
+			if(err) return cb(err);
+
+		    if(!customer)
+				return cb("Customer not found");
+			var event = customer.events.id(id);
+			if(!event)
+				return cb("Event not found");
+			for(var key in params){
+				event[key] = params[key];
+			}
+
+			customer.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+		});
 	},
 
 	deleteEvent: function(user, id, cb){
