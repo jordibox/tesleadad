@@ -25,18 +25,15 @@ var EventSchema = new Schema({
 
 var PrepickSchema = new Schema({
 	date:{
-		type: Date,
-		required: true
+		type: Date		
 	},
 	company: {
 		id_company:{
 			type: Schema.ObjectId,
-			ref: "Company",
-			required: true
+			ref: "Company"
 		},
 		id_service:{		
-			type: Number,
-			required: true
+			type: Number
 		}
 	},
 	dateCreated: Date
@@ -114,6 +111,7 @@ CustomerSchema.statics={
 			}
 
 		}	
+
 		query.exec(cb);
 		
 	},
@@ -164,13 +162,13 @@ CustomerSchema.statics={
 					break;
 				default : 
 					var field = "events."+key;
-
-				query.match({'events.'+key: Utils.like(params[key])});
-				break;
-
+					var match={};
+					match[field] = Utils.like(params[key]);
+					query.match(match);			
 			}
 		}
 
+console.log(query._pipeline);
 		query.exec(cb);
 
 

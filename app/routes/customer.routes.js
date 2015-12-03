@@ -85,7 +85,9 @@ router.route("/event")
 				else
 			Response.printSuccess(res, "data", "Event deleted");
 		})
-	})
+	});
+
+
 
 
 router.route("/event/:id")

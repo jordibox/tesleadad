@@ -20,8 +20,10 @@ router.route("/category")
 		});
 	});
 
+/*router.route("/prepick")
+	.post()
 	
-	
+*/	
 	
 	
 	
