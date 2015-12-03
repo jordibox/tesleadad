@@ -1,28 +1,25 @@
 var C=require("../../config/config");
-var Response = require(C.lib+"response");
+var Response = require(C.lib + "response");
 var AuthModel = require(C.models + "auth").Auth;
 var async = require("async");
 var AuthController = {};
 
 
-AuthController.register = function (role) {
-	return function (req, res, next) {
-		var user = req.body;
-
-		if (!user || !user.email || !user.password) return Response.printError("Fields not Filled");
+AuthController.register = function (role, user, id, cb) {
+	
+		if (!user || !user.email || !user.password) return cb("Fields not Filled");
 
 		var auth = new AuthModel({
 			email: user.email,
 			password: user.password,
-			role: role
+			role: role,
+			user:id
 		});
 
 		auth.save(function (err) {
-			if (err) return res.jsonp(err);
-			next();
+			if (err) return cb(err);
+			cb();
 		});
-
-	}
 }
 
 
@@ -66,12 +63,12 @@ AuthController.checkAccess=function(role){
 
 		var token = req.headers.authorization;
 		if(!token)return Response.printError(res,"No Authorization");
-		AuthModel.findByToken(token, function(err,user){
+		AuthModel.findByToken(token, function(err,auth){
 
 			if(err)return Response.printError(res, err);
-			if(user.role!==role && user.role!==0) return Response.printError(res,"No Authorization");
+			if(auth.role!==role && auth.role!==0) return Response.printError(res,"No Authorization");
 			
-			req.user=user;
+			req.user=auth.user;
 			next();
 		});
 	}

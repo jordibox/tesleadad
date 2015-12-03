@@ -10,10 +10,10 @@ Controller.newUser = function (body, cb) { //datos del body, callback
 	
 	var customer = new CustomerModel(body);
 
-	customer.save(function (err) {
+	customer.save(function (err, result) {
 		if (err) return cb(err);
-		//cb("Error","usuario creado");
-		cb();//Retorno de la funcion newUser
+		
+		cb(null, result);
 	});
 };
 
@@ -56,6 +56,10 @@ Controller.delete = function(query, cb){
 		return cb(null, "Customer deleted");
 
 	})
+}
+
+Controller.rollback=function(id){
+	CustomerModel.findByIdAndRemove(id);
 }
 
 module.exports = Controller;

@@ -9,9 +9,9 @@ Controller.newCompany = function (body, cb) {
 	if (!body || !body.cif || !body.name || !body.category) return cb("Fields not Filled");
 	var company = new CompanyModel(body);
 
-	company.save(function (err) {
+	company.save(function (err, result) {
 		if (err) return cb(err);
-		cb();
+		cb(null, result);
 	});
 };
 
@@ -26,41 +26,7 @@ Controller.search = function(query, cb){
 	});
 };
 
-Controller.login = function (u, cb) {
 
-	async.waterfall([
-		function (next) {
-			CompanyModel.findOne({ email: u.email }, function (err, user) {
-				if (err) { return next(err); }
-
-				if (!user) { return next("No users", false); }
-
-				u.role = user.role;
-
-				next(null, user);
-			});
-		},
-		function (user, next) {
-			user.authenticate(u, function(err, token){
-				user.token.push(token);
-				next(err, user, token);
-			});
-		},
-		function(user, token, next){
-			user.save(function(err){
-				next(err, token, user.role);
-			});
-		}
-	], function(err, token, role) {
-		if(err) return cb(err);
-		cb(false, {token:token, role:role});
-	});
-
-};
-
-Controller.checkAccess=function(role){
-	
-}
 
 Controller.findById = function(id, cb){
 
@@ -73,5 +39,10 @@ Controller.findById = function(id, cb){
 		return cb(null, company);
 	});
 };
+
+
+Controller.rollback=function(id){
+	CompanyModel.findByIdAndRemove(id);
+}
 
 module.exports = Controller;

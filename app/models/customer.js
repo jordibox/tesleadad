@@ -117,7 +117,7 @@ CustomerSchema.statics={
 	},
 
 	newEvent:function(user, params, cb){		
-		this.findOneAndUpdate({email: user.email},{$push:{"events":{}}}, {safe:true, upsert:true, new:true}, function(err, customer){
+		this.findOneAndUpdate({_id: user},{$push:{"events":{}}}, {safe:true, upsert:true, new:true}, function(err, customer){
 			if(err)return cb(err);
 			if(!customer)return cb(null, "User not found");
 			var event = customer.events[customer.events.length-1];
@@ -137,7 +137,7 @@ CustomerSchema.statics={
 
 	searchEvent:function(user, params, cb){
 		
-		var query = this.aggregate([{$unwind:"$events"},{$match: {email: user.email}}]);
+		var query = this.aggregate([{$unwind:"$events"},{$match: {_id: user}}]);
 		
 		for(var key in params){
 			switch(key){
@@ -168,7 +168,7 @@ CustomerSchema.statics={
 			}
 		}
 
-console.log(query._pipeline);
+
 		query.exec(cb);
 
 
@@ -189,7 +189,7 @@ console.log(query._pipeline);
 
 	findEventById: function(user, id, cb){
 
-		this.findOne({email: user.email}, function(err, customer){
+		this.findOne({_id: user}, function(err, customer){
 			if(err) return cb(err);
 
 		    if(!customer)
@@ -204,7 +204,7 @@ console.log(query._pipeline);
 	},
 
 	modifyEvent: function(user, id, params, cb){
-		this.findOne({email: user.email}, function(err, customer){
+		this.findOne({_id: user}, function(err, customer){
 			if(err) return cb(err);
 
 		    if(!customer)
@@ -225,7 +225,7 @@ console.log(query._pipeline);
 	},
 
 	deleteEvent: function(user, id, cb){
-		this.findOne({email: user.email}, function(err, customer){
+		this.findOne({_id: user}, function(err, customer){
 			if(err) return cb(err);
 
 		    if(!customer)

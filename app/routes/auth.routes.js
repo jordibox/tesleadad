@@ -5,7 +5,7 @@ var Response = require(C.lib+"response");
 var router = Router();
 router.route("")
 	.get(function (req, res) {
-		res.jsonp({ message: "Do you want register?" });
+		Response.printSuccess(res, "message", "Do you want register?" );
 	})
 	.post(function (req, res){
 		AuthCtrl.login(req.body, function(err, user){
