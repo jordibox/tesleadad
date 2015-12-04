@@ -103,10 +103,10 @@ router.route("/event")
 
 router.route("/prePick")
 	.get(AuthController.checkAccess(1),function(req, res){
-	PrePickCtrl.search(req.user, req.query, function(err, events){
-		if(err) Response.printError(res, err);
-			else
-		Response.printSuccess(res, "data", events);
+		PrePickCtrl.search(req.user, req.query, function(err, events){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", events);
 	})
 })
 

@@ -24,7 +24,20 @@ Controller.calculatePrePicks = function(body, cb){
 		cb();
 
 	});
-
 }
+
+Controller.search = function(user, body, cb){
+	CustomerModel.searchPrePick(user, body, function(err, prePicks){
+		
+		if(err) return cb(err);
+
+		if(!prePicks)
+			return cb(null, "PrePicks not found");
+
+
+		cb(null, prePicks);
+	})
+};
+
 
 module.exports = Controller;

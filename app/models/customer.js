@@ -145,7 +145,6 @@ CustomerSchema.statics={
 					query.match({'events.initDate': {'$lte': new Date(params[key]) }}); //en agregate para trabajar con las fechas pide un objeto date,no es como find		
 					break;
 				case 'afterInitDate':
-					var date = new Date(params[key]);
 					query.match({'events.initDate':   { '$gte':  new Date(params[key])}});
 					break; 
 				case 'beforeEndDate':
@@ -256,7 +255,53 @@ CustomerSchema.statics={
 				cb();
 			});
 		});
-	}
+	},
+
+	searchPrePick:function(user, params, cb){
+		
+		var query = this.aggregate([{$unwind:"$prepicks"},{$match: {_id: user}}]);
+		
+		for(var key in params){
+			switch(key){
+				case 'beforeDate': 
+					query.match({'prepicks.date': {'$lte': new Date(params[key]) }});
+					break;
+				case 'afterDate':
+					query.match({'prepicks.date': {'$gte': new Date(params[key])}});
+					break;
+				case 'beforeDateCreated': 
+					query.match({'prepicks.dateCreated': {'$lte': new Date(params[key]) }});
+					break;
+				case 'afterDateCreated':
+					query.match({'prepicks.dateCreated': {'$gte': new Date(params[key])}});
+					break;				
+				default : 
+					var field = "prepicks."+key;
+					var match={};
+					match[field] = params[key];
+					query.match(match);			
+			}
+		}
+
+
+		query.exec(cb);
+
+/*
+		this.findOne({email: user.email}, function(err, user){
+			if(err) return cb(err);
+			if(!user) return cb(null, "User not found");
+
+			var filtred = user.events.filter(function(event){
+				
+				return true;
+			});
+			cb(null, filtred);
+		});
+
+*/
+	},
+
+
 
 }
 
