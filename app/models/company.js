@@ -113,8 +113,8 @@ CompanySchema.statics={
 	},
 
 	newReview: function(user, params, cb){
-		//{$addToSet: {'review.id_customer': params.customer_id}},
-		this.findOneAndUpdate({_id: params.company_id},  {$addToSet:{review:{id_customer: user}}},   function(err, company){
+		//{$addToSet: {'review.id_customer': user}},
+		this.findOneAndUpdate({_id: params.company_id},  {$addToSet:{review:{id_customer: user}}}, {safe:true, upsert:true, new:true},  function(err, company){
 			if(err)return cb(err);
 			if(!company)return cb("Company not found");
 
