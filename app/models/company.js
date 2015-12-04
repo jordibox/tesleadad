@@ -14,8 +14,7 @@ var RatingSchema = new Schema({
 	id_customer: {
 		type: Schema.ObjectId, 
 		ref: "Customer",
-		unique: true,
-		required:true
+		unique: true
 	},
 	rating: Number
 });
