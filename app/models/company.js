@@ -23,7 +23,8 @@ var ReviewSchema = new Schema({
 	id_customer: {
 		type: Schema.ObjectId, 
 		ref: "Customer",
-		unique: true
+		unique: true,
+		required: true
 	},
 	rating: Number,
 	description: String,
