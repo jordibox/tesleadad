@@ -14,8 +14,7 @@ var RatingSchema = new Schema({
 	id_customer: {
 		type: Schema.ObjectId, 
 		ref: "Customer",
-		unique: true,
-		required: true
+		unique: true
 	},
 	rating: Number
 });
@@ -24,8 +23,7 @@ var ReviewSchema = new Schema({
 	id_customer: {
 		type: Schema.ObjectId, 
 		ref: "Customer",
-		unique: true,
-		required: true
+		unique: true
 	},
 	rating: Number,
 	description: String,
@@ -35,12 +33,10 @@ var ReviewSchema = new Schema({
 var PromotionSchema = new Schema({
 	name: String,
 	initDate: {
-		type: Date,
-		required: true
+		type: Date
 	},
 	endDate: {
-		type: Date,
-		required: true
+		type: Date
 	},
 	photos: [String],
 	useLimit: Number,
@@ -107,15 +103,34 @@ var CompanySchema = new Schema({
 });
 
 CompanySchema.statics={
-	search:function(params, cb){ //en params no meter id, todos los demas datos si
+	search:function(params, cb){ 
 		var query = this.find({});
 		for(var key in params){
 			query.where(key).equals(Utils.like(params[key]));
 		}
 		
-		query.exec(cb);
-		
+		query.exec(cb);	
+	},
+
+	newReview: function(user, params, cb){
+		//{$addToSet: {'review.id_customer': params.customer_id}},
+		this.findOneAndUpdate({_id: params.company_id},  {$push:{"review":{}}}, {safe:true, upsert:true, new:true},  function(err, company){
+			if(err)return cb(err);
+			if(!company)return cb("Company not found");
+
+			var review = company.review[company.review.length-1];
+			review.id_customer = user;
+			review.rating = params.rating;
+			review.description = params.description;
+			review.date = new Date();
+
+			company.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+		});
 	}
 
 };
 module.exports = mongoose.model("Company", CompanySchema);
+

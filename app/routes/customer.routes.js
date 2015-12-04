@@ -6,6 +6,7 @@ var AuthController = require(C.ctrl+"auth.ctrl");
 var PickCtrl = require(C.ctrl+"pick.ctrl");
 var EventCtrl = require(C.ctrl+"event.ctrl");
 var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
+var CompanyCtrl = require(C.ctrl+"company.ctrl");
 var Response = require(C.lib+"response");
 var router = Router();
 
@@ -30,7 +31,7 @@ router.route("")
 		})
 	}
 		)
-	.get(function (req, res) {
+	.get(AuthController.checkAccess(0), function (req, res) {
 		CustomerCtrl.search(req.query, function (err, customers) {
 			if (err) Response.printError(res, err);
 			else
@@ -49,8 +50,7 @@ router.route("")
 
 
 router.route("/pick")
-	.post(function (req, res) {
-
+	.post(AuthController.checkAccess(1), function (req, res) {
 		PickCtrl.new(req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
@@ -58,7 +58,7 @@ router.route("/pick")
 		});
 	})
 
-	.get(function (req, res) {
+	.get(AuthController.checkAccess(1), function (req, res) {
 		PickCtrl.search(req.query, function (err, picks) {
 			if (err) Response.printError(res, err);
 			else if (picks.length == 0)
@@ -68,7 +68,7 @@ router.route("/pick")
 		});
 	})
 
-	.delete(function (req, res) {
+	.delete(AuthController.checkAccess(1), function (req, res) {
 		PickCtrl.delete(req.body, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
@@ -107,9 +107,24 @@ router.route("/prePick")
 			if(err) Response.printError(res, err);
 				else
 			Response.printSuccess(res, "data", events);
+		})
 	})
-})
+	.delete(AuthController.checkAccess(1), function (req, res) {
+		PrePickCtrl.delete(req.user, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "PrePick deleted");
+		})
+	});
 
+router.route("/reviewCompany")
+	.post(AuthController.checkAccess(1), function (req, res) {
+		CompanyCtrl.newReview(req.user, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Review created");
+		})
+	})
 
 
 router.route("/event/:id")
@@ -128,8 +143,18 @@ router.route("/event/:id")
 		});
 	})
 
+router.route("/prePick/:id")
+	.get(AuthController.checkAccess(1), function (req, res) {
+		PrePickCtrl.findById(req.user, req.params.id, function (err, prePick) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", prePick);
+		});
+	})
+
+
 router.route("/pick/:id")
-	.get(function (req, res) {
+	.get(AuthController.checkAccess(1), function (req, res) {
 		PickCtrl.findById(req.params.id, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
@@ -138,7 +163,7 @@ router.route("/pick/:id")
 	});
 
 router.route("/:id")
-	.get(function (req, res) {
+	.get(AuthController.checkAccess(0), function (req, res) {
 		CustomerCtrl.findById(req.params.id, function (err, customer) {
 			if (err) Response.printError(res, err);
 			else

@@ -119,7 +119,7 @@ CustomerSchema.statics={
 	newEvent:function(user, params, cb){		
 		this.findOneAndUpdate({_id: user},{$push:{"events":{}}}, {safe:true, upsert:true, new:true}, function(err, customer){
 			if(err)return cb(err);
-			if(!customer)return cb(null, "User not found");
+			if(!customer)return cb("User not found");
 			var event = customer.events[customer.events.length-1];
 			event.name = params.name;
 			event.initDate = params.initDate;
@@ -168,22 +168,13 @@ CustomerSchema.statics={
 		}
 
 
-		query.exec(cb);
-
-
-/*
-		this.findOne({email: user.email}, function(err, user){
-			if(err) return cb(err);
-			if(!user) return cb(null, "User not found");
-
-			var filtred = user.events.filter(function(event){
-				
-				return true;
+		query.exec(function(err, customersEvent){
+			var events = customersEvent.map(function(a){
+				return a.events;
 			});
-			cb(null, filtred);
+			cb(null, events);
 		});
 
-*/
 	},
 
 	findEventById: function(user, id, cb){
@@ -283,24 +274,48 @@ CustomerSchema.statics={
 			}
 		}
 
-
-		query.exec(cb);
-
-/*
-		this.findOne({email: user.email}, function(err, user){
-			if(err) return cb(err);
-			if(!user) return cb(null, "User not found");
-
-			var filtred = user.events.filter(function(event){
-				
-				return true;
+		query.exec(function(err, customersPrePick){
+			var prePicks = customersPrePick.map(function(a){
+				return a.prepicks;
 			});
-			cb(null, filtred);
+			cb(null, prePicks);
 		});
 
-*/
 	},
 
+	findPrePickById: function(user, id, cb){
+
+		this.findOne({_id: user}, function(err, customer){
+			if(err) return cb(err);
+
+		    if(!customer)
+				return cb("Customer not found");
+
+			var prePick = customer.prepicks.id(id);
+			if(!prePick)
+				return cb("Event not found");
+			cb(null, prePick);
+
+		})
+	},
+
+	deletePrePick: function(user, id, cb){
+		this.findOne({_id: user}, function(err, customer){
+			if(err) return cb(err);
+
+		    if(!customer)
+				return cb("Customer not found");
+
+			if(!customer.prepicks.id(id))
+				return cb("PrePick not found");
+
+			customer.prepicks.id(id).remove();
+			customer.save(function(err){
+				if(err) return cb(err);
+				cb();
+			})
+		})
+	}
 
 
 }

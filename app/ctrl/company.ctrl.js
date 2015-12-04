@@ -26,10 +26,7 @@ Controller.search = function(query, cb){
 	});
 };
 
-
-
 Controller.findById = function(id, cb){
-
 	CompanyModel.findById(id, function(err, company){
 		if(err) return cb(err);
 
@@ -39,6 +36,15 @@ Controller.findById = function(id, cb){
 		return cb(null, company);
 	});
 };
+
+Controller.newReview = function(user, body, cb){
+	if (!body || !body.company_id || !body.rating ) return cb("Fields not Filled");
+	
+	CompanyModel.newReview(user, body, function(err){
+		if(err) return cb(err);
+		cb();
+	})
+}
 
 
 Controller.rollback=function(id){
