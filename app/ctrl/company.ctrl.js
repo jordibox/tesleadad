@@ -6,7 +6,7 @@ var async = require("async");
 var Controller = {};
 
 Controller.newCompany = function (body, cb) {
-	if (!body || !body.cif || !body.name || !body.category) return cb("Fields not Filled");
+	if (!body || !body.cif || !body.name || !body.category || !body.email) return cb("Fields not Filled");
 	var company = new CompanyModel(body);
 
 	company.save(function (err, result) {
@@ -44,11 +44,23 @@ Controller.newReview = function(user, body, cb){
 		if(err) return cb(err);
 		cb();
 	})
-}
+};
+
+Controller.newRateService = function(user, body, cb){
+	if (!body || !body.service_id || !body.company_id || !body.rating ) return cb("Fields not Filled");
+	
+	CompanyModel.newRateService(user, body, function(err){
+		if(err) return cb(err);
+		cb();
+	})
+};
+
 
 
 Controller.rollback=function(id){
-	CompanyModel.findByIdAndRemove(id);
+	CompanyModel.findById(id,function(err, company){
+		company.remove();
+	});
 }
 
 module.exports = Controller;

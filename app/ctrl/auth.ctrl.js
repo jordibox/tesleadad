@@ -60,6 +60,7 @@ AuthController.login = function (u, cb) {
 
 AuthController.checkAccess=function(role){
 	return function (req, res, next) {
+		
 
 		var token = req.headers.authorization;
 		if(!token)return Response.printError(res,"No Authorization");

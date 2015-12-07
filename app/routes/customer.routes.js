@@ -48,6 +48,15 @@ router.route("")
 		});
 	});
 
+router.route("/profile")
+	.get(AuthController.checkAccess(1), function (req, res) {
+		CustomerCtrl.findById(req.user, function (err, customer) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", customer);
+		});
+	});
+
 
 router.route("/pick")
 	.post(AuthController.checkAccess(1), function (req, res) {
@@ -123,6 +132,15 @@ router.route("/reviewCompany")
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Review created");
+		})
+	})
+
+router.route("/rateService")
+	.post(AuthController.checkAccess(1), function (req, res) {
+		CompanyCtrl.newRateService(req.user, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Service rated");
 		})
 	})
 

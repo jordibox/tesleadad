@@ -17,7 +17,7 @@ var PickSchema = new Schema({
 			required: true
 		},
 		id_service:{		
-			type: Number,
+			type: Schema.ObjectId,
 			required: true
 		}
 	},

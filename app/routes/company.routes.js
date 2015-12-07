@@ -26,16 +26,67 @@ router.route("")
 		})
 	}
 		)
-	.get(function(req, res){
+	.get(AuthController.checkAccess(0), function(req, res){
 		CompanyCtrl.search(req.query, function(err, companies){
 			if(err) Response.printError(res, err);
-				else
-			Response.printSuccess(res, "data", companies);
+			else
+				Response.printSuccess(res, "data", companies);
 		});
 	});
 
+
+router.route("/profile")
+	.get(AuthController.checkAccess(2), function (req, res) {
+		CompanyCtrl.findById(req.user, function (err, company) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", company);
+		});
+	});
+
+
+	
+router.route("/service")
+	.post(AuthController.checkAccess(2), function(req, res){
+		ServiceCtrl.newService(req.user, req.body, function(err){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Service created");
+		});
+	})
+	.get(AuthController.checkAccess(2), function(req, res){
+		ServiceCtrl.search(req.user, req.query, function(err, services){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", services);
+		});
+	})
+	.delete(AuthController.checkAccess(2), function (req, res) {
+		ServiceCtrl.delete(req.user, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Service deleted");
+		})
+	});
+	
+router.route("/service/:id")
+	.get(AuthController.checkAccess(2), function (req, res) {
+		ServiceCtrl.findById(req.user, req.params.id, function (err, service) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", service);
+		});
+	})
+	.put(AuthController.checkAccess(2), function (req, res) {
+		ServiceCtrl.modify(req.user, req.params.id, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Service modified");
+		});
+	})	
+
 router.route("/:id")
-	.get(function(req, res){
+	.get(AuthController.checkAccess(0), function(req, res){
 		CompanyCtrl.findById(req.params.id, function(err, company){
 			if(err) Response.printError(res, err);
 			else
@@ -43,23 +94,6 @@ router.route("/:id")
 		} );
 	});
 
-	
-router.route("/service")
-	.post(function(req, res){
-		ServiceCtrl.newService(req.body, function(err){
-			if(err) Response.printError(res, err);
-				else
-			Response.printSuccess(res, "data", "Service created");
-		});
-	})
-	.get(function(req, res){
-		ServiceCtrl.search(req.query, function(err, services){
-			if(err) Response.printError(res, err);
-				else
-			Response.printSuccess(res, "data", services);
-		});
-	});
-	
 
 	
 	module.exports = router;

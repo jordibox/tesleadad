@@ -17,8 +17,6 @@ Controller.newUser = function (body, cb) { //datos del body, callback
 	});
 };
 
-
-
 Controller.search = function(query, cb){
 	CustomerModel.search(query, function(err, customers){
 		if(err) return cb(err);
@@ -59,7 +57,9 @@ Controller.delete = function(query, cb){
 }
 
 Controller.rollback=function(id){
-	CustomerModel.findByIdAndRemove(id);
+	CustomerModel.findById(id,function(err, customer){
+		customer.remove();
+	});
 }
 
 module.exports = Controller;
