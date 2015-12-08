@@ -28,7 +28,7 @@ router.route("")
 			}
 			else
 				Response.printSuccess(res, "data", "Register Successfully");
-		})
+		});
 	}
 		)
 	.get(AuthController.checkAccess(0), function (req, res) {
