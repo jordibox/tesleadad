@@ -25,6 +25,7 @@ var PickSchema = new Schema({
 		type: Date,
 		required: true
 	},
+	dateCreated: Date,
 	observation: String,
 	state: {
 		type: String, 
@@ -37,10 +38,10 @@ var PickSchema = new Schema({
 PickSchema.statics={
 	search:function(params, cb){ //en params no meter id, todos los demas datos si
 		var query = this.find({});
-		console.log(query);
 		for(var key in params){
 
 			switch(key){
+
 				case "id_customer":  
 				case "company.id_company":
 				case "id_service":
@@ -53,6 +54,12 @@ PickSchema.statics={
 				case 'afterInitDate':
 					query.where('initDate').gt(params[key]);
 					break;		
+				case 'beforeDateCreated':
+					query.where('dateCreated').lt(params[key]);
+					break;
+				case 'afterDateCreated':
+					query.where('dateCreated').gt(params[key]);
+					break;
 				default:
 					query.where(key).equals(Utils.like(params[key]));
 			}

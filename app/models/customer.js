@@ -249,8 +249,11 @@ CustomerSchema.statics={
 	},
 
 	searchPrePick:function(user, params, cb){
-		
-		var query = this.aggregate([{$unwind:"$prepicks"},{$match: {_id: user}}]);
+		var query;
+		if(user != 0)
+			query = this.aggregate([{$unwind:"$prepicks"},'name surname email',{$match: {_id: user}}]);
+		else
+			query = this.aggregate([{$unwind:"$prepicks"}]);
 		
 		for(var key in params){
 			switch(key){
@@ -274,11 +277,16 @@ CustomerSchema.statics={
 			}
 		}
 
+
 		query.exec(function(err, customersPrePick){
-			var prePicks = customersPrePick.map(function(a){
-				return a.prepicks;
-			});
-			cb(null, prePicks);
+			if(user!=0){
+				var prePicks = customersPrePick.map(function(a){
+					return a.prepicks;
+				});
+				return cb(null, prePicks);
+			}
+			cb(null, customersPrePick);
+			
 		});
 
 	},

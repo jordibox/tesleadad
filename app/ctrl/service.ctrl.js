@@ -1,6 +1,6 @@
 
 var C=require("../../config/config");
-
+var async = require("async");
 var ServiceNameModel = require(C.models+"service_name");
 var CompanyModel = require(C.models+"company");
 var Controller = {};
@@ -41,35 +41,44 @@ Controller.search = function(user, query, cb){
 	CompanyModel.searchService(user, query, function(err, services){
 		if(err) return cb(err);
 
-		if(!services)
+		if(!services || services.length==0 )
 			return cb(null, "Services not found");
-		for(var service in services){
-			ServiceNameModel.findById(services[service].id_name)
-			.select('name duration keywords description')
-			.exec(function(err, service_name){
-				console.log(service_name);
-				services[service].id_name=service_name;
-				cb(null, services);
+
+		async.map(services, function(service, next){
+			async.waterfall([
+				function(callback){
+					ServiceNameModel.findById(service.services.id_name)
+					.select('name duration keywords description')
+					.exec(function(err, service_name){
+						if(err) return callback(err);
+						service.services.id_name=service_name;
+						callback(null, service);
+					});
+				}
+
+			], function(err, result){
+				if(err) return next(err);
+				next(null, result);
 			});
-		}
+		}, function(err, result){
+			if(err) return cb(err);
+			cb(null, result);
+		});	
 	})
 };
 
 Controller.findById = function(user, id, cb){
 	CompanyModel.findServiceById(user, id, function(err, service){
 		if(err) return cb(err);	
-		/*
+		
 		ServiceNameModel.findById(service.id_name)
 		.select('name duration keywords description')
 		.exec(function(err, service_name){
-			var s =[];
-			s.push(service);
-			s[0].id_name = service_name;
-			cb(null, s);
-			
-		});*/
-		cb(null, service);
-		
+			var serviceData = [];
+			serviceData.push(pick);
+			serviceData.push({"serviceData": service_name});
+			cb(null, serviceData);			
+		});		
 	});
 };
 	

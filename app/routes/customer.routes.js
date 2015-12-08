@@ -66,12 +66,9 @@ router.route("/pick")
 				Response.printSuccess(res, "data", "Pick created");
 		});
 	})
-
 	.get(AuthController.checkAccess(1), function (req, res) {
 		PickCtrl.search(req.query, function (err, picks) {
 			if (err) Response.printError(res, err);
-			else if (picks.length == 0)
-				Response.printError(res, "No picks");
 			else
 				Response.printSuccess(res, "data", picks);
 		});

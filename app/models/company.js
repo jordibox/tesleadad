@@ -166,7 +166,12 @@ CompanySchema.statics={
 	},
 
 	searchService: function(user, params, cb){
-		var query = this.aggregate([{$unwind:"$services"},{$match: {_id: user}}]);
+		var query;
+		if(user != 0)
+			query = this.aggregate([{$unwind:"$services"},{$match: {_id: user}}]);
+		else
+			query = this.aggregate([{$unwind:"$services"}]);
+
 		var greaterRating=false;
 		var lessRating=false;
 		for(var key in params){
@@ -204,28 +209,33 @@ CompanySchema.statics={
 		}
 
 		query.exec(function(err, companyService){
-			if(greaterRating || lessRating)	{
-				var rates = getServiceRating(companyService);
-				var noDeleted=0;
-				for(var rate in rates){	
-					if(params.greaterRating && params.lessRating){
-						if(!(rates[rate] >= params.greaterRating && rates[rate] <= params.lessRating))
+			if(companyService.length != 0)
+				if(greaterRating || lessRating)	{
+					var rates = getServiceRating(companyService);
+					var noDeleted=0;
+					for(var rate in rates){	
+						if(params.greaterRating && params.lessRating){
+							if(!(rates[rate] >= params.greaterRating && rates[rate] <= params.lessRating))
+								companyService.splice(noDeleted,1);
+							else
+								noDeleted++;
+						}else if(params.greaterRating && rates[rate] <= params.greaterRating){
 							companyService.splice(noDeleted,1);
-						else
+						}else if(params.lessRating && rates[rate] >= params.lessRating){
+							companyService.splice(noDeleted,1);
+						}else 
 							noDeleted++;
-					}else if(params.greaterRating && rates[rate] <= params.greaterRating){
-						companyService.splice(noDeleted,1);
-					}else if(params.lessRating && rates[rate] >= params.lessRating){
-						companyService.splice(noDeleted,1);
-					}else 
-						noDeleted++;
+					}
 				}
+
+			if(user != 0){		
+				var services = companyService.map(function(a){
+					return a.services;
+				});
+				return cb(null, services);
 			}
 			
-			var services = companyService.map(function(a){
-				return a.services;
-			});
-			cb(null, services);
+			cb(null, companyService);
 		});
 
 	},
@@ -241,6 +251,7 @@ CompanySchema.statics={
 			var service = company.services.id(id);
 			if(!service)
 				return cb("Service not found");
+			
 			cb(null, service);
 
 		})

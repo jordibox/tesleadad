@@ -1,8 +1,10 @@
 var Router = require("express").Router;
-var CompanyCtrl = require("../ctrl/company.ctrl");
-var AuthController = require("../ctrl/auth.ctrl");
-var ServiceCtrl = require("../ctrl/service.ctrl")
-var PromotionCtrl = require("../ctrl/promotion.ctrl")
+var C = require("../../config/config");
+var CompanyCtrl = require(C.ctrl+"company.ctrl");
+var AuthController = require(C.ctrl+"auth.ctrl");
+var ServiceCtrl = require(C.ctrl+"service.ctrl");
+var PromotionCtrl = require(C.ctrl+"promotion.ctrl");
+var PickCtrl = require(C.ctrl+"pick.ctrl");
 var Response = require("../lib/response");
 var router = Router();
 
@@ -43,6 +45,23 @@ router.route("/profile")
 			else
 				Response.printSuccess(res, "data", company);
 		});
+	});
+
+router.route("/pick")
+	.get(AuthController.checkAccess(2), function (req, res) {
+		req.query["company.id_company"] = req.user;	
+		PickCtrl.search(req.query, function (err, picks) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", picks);
+		});
+	})
+	.delete(AuthController.checkAccess(2), function (req, res) {
+		PickCtrl.delete(req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Pick deleted");
+		})
 	});
 
 
@@ -92,6 +111,15 @@ router.route("/promotion")
 				Response.printSuccess(res, "data", "Promotion deleted");
 		})
 	});
+
+router.route("/pick/:id")
+	.get(AuthController.checkAccess(2), function (req, res) {
+		PickCtrl.findById(req.params.id, function (err, service) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", service);
+		});
+	})
 	
 router.route("/service/:id")
 	.get(AuthController.checkAccess(2), function (req, res) {
