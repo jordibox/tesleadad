@@ -2,6 +2,7 @@ var Router = require("express").Router;
 var CompanyCtrl = require("../ctrl/company.ctrl");
 var AuthController = require("../ctrl/auth.ctrl");
 var ServiceCtrl = require("../ctrl/service.ctrl")
+var PromotionCtrl = require("../ctrl/promotion.ctrl")
 var Response = require("../lib/response");
 var router = Router();
 
@@ -68,6 +69,29 @@ router.route("/service")
 				Response.printSuccess(res, "data", "Service deleted");
 		})
 	});
+
+router.route("/promotion")
+	.post(AuthController.checkAccess(2), function(req, res){
+		PromotionCtrl.new(req.user, req.body, function(err){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Promotion created");
+		});
+	})
+	.get(AuthController.checkAccess(2), function(req, res){
+		PromotionCtrl.search(req.user, req.query, function(err, promotions){
+			if(err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", promotions);
+		});
+	})
+	.delete(AuthController.checkAccess(2), function (req, res) {
+		PromotionCtrl.delete(req.user, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Promotion deleted");
+		})
+	});
 	
 router.route("/service/:id")
 	.get(AuthController.checkAccess(2), function (req, res) {
@@ -82,6 +106,22 @@ router.route("/service/:id")
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Service modified");
+		});
+	})	
+
+router.route("/promotion/:id")
+	.get(AuthController.checkAccess(2), function (req, res) {
+		PromotionCtrl.findById(req.user, req.params.id, function (err, promotion) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", promotion);
+		});
+	})
+	.put(AuthController.checkAccess(2), function (req, res) {
+		PromotionCtrl.modify(req.user, req.params.id, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Promotion modified");
 		});
 	})	
 

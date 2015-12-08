@@ -15,7 +15,8 @@ var RatingSchema = new Schema({
 		type: Schema.ObjectId, 
 		ref: "Customer"
 	},
-	rating: Number
+	rating: Number,
+	date: Date
 });
 
 var ReviewSchema = new Schema({
@@ -40,7 +41,8 @@ var PromotionSchema = new Schema({
 	useLimit: Number,
 	description: String,
 	timesUsed: Number,
-	ownCustomers: Boolean
+	ownCustomers: Boolean,
+	dateCreated: Date
 });
 
 var ServiceSchema = new Schema({
@@ -137,7 +139,7 @@ CompanySchema.statics={
 		
 			var service = company.services.id(params.service_id);
 			if(!service) return cb("Service not found");
-			service.rating.push( {id_customer: user, rating: params.rating});
+			service.rating.push( {id_customer: user, rating: params.rating, date: new Date()});
 			company.save(function(err){
 				if(err) return cb(err);				
 				cb();
@@ -201,20 +203,22 @@ CompanySchema.statics={
 			}
 		}
 
-		
-
 		query.exec(function(err, companyService){
 			if(greaterRating || lessRating)	{
 				var rates = getServiceRating(companyService);
 				var noDeleted=0;
 				for(var rate in rates){	
-					if (!(params.greaterRating <= rates[rate] <= params.lessRating)){
-						console.log(params.greaterRating, rates[rate], params.lessRating );	
-					
-						companyService.splice(noDeleted,noDeleted+1);
-
-					}else
-					noDeleted++;
+					if(params.greaterRating && params.lessRating){
+						if(!(rates[rate] >= params.greaterRating && rates[rate] <= params.lessRating))
+							companyService.splice(noDeleted,1);
+						else
+							noDeleted++;
+					}else if(params.greaterRating && rates[rate] <= params.greaterRating){
+						companyService.splice(noDeleted,1);
+					}else if(params.lessRating && rates[rate] >= params.lessRating){
+						companyService.splice(noDeleted,1);
+					}else 
+						noDeleted++;
 				}
 			}
 			
@@ -279,28 +283,151 @@ CompanySchema.statics={
 				cb();
 			})
 		})
-	}
+	},
 
-	
+	newPromotion: function(user, params, cb){
+		this.findOne({_id: user}, function(err, company){
+			if(err)return cb(err);
+			if(!company)return cb("Company not found");
+
+			company.promotions.push(params);
+			var promotion = company.promotions[company.promotions.length-1];
+			promotion.dateCreated = new Date();
+			company.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+
+		})
+	},
+
+	searchPromotion: function(user, params, cb){
+		var query = this.aggregate([{$unwind:"$promotions"},{$match: {_id: user}}]);
+		for(var key in params){
+			switch(key){
+				case 'beforeDateCreated':
+					query.match({'promotions.dateCreated': {'$lte': new Date(params[key])}});
+					break;
+				case 'afterDateCreated':
+					query.match({'promotions.dateCreated': {'$gte': new Date(params[key])}});
+					break;
+				case 'beforeInitDate':
+					query.match({'promotions.initDate': {'$lte': new Date(params[key])}});
+					break;
+				case 'afterInitDate':
+					query.match({'promotions.initDate': {'$gte': new Date(params[key])}});
+					break;
+				case 'beforeEndDate':
+					query.match({'promotions.endDate': {'$lte': new Date(params[key])}});
+					break;
+				case 'afterEndDate':
+					query.match({'promotions.endDate': {'$gte': new Date(params[key])}});
+					break;
+				case 'greaterUseLimit':
+					query.match({'services.useLimit' : {'$gte' : parseInt(params[key])}});
+					break;
+				case 'lessUseLimit':
+					query.match({'services.useLimit' : {'$gte' : parseInt(params[key])}});
+					break;
+				case 'greaterTimeUsed':
+					query.match({'services.timesUsed' : {'$gte' : parseInt(params[key])}});
+					break;
+				case 'lessUseTimeUsed':
+					query.match({'services.timesUsed' : {'$gte' : parseInt(params[key])}});
+					break;
+				case 'beforeDateCreated':
+					query.match({'promotions.dateCreated': {'$lte': new Date(params[key])}});
+					break;
+				case 'afterDateCreated':
+					query.match({'promotions.dateCreated': {'$gte': new Date(params[key])}});
+					break;
+
+				default : 
+					var field = "promotions."+key;
+					var match={};
+					match[field] = Utils.like(params[key]);
+					query.match(match);	
+			}
+		}
+
+		query.exec(function(err, companyPromotion){			
+			var promotions = companyPromotion.map(function(a){
+				return a.promotions;
+			});
+			cb(null, promotions);
+		});
+	},	
+
+	findPromotionById: function(user, id, cb){
+		this.findOne({_id: user}, function(err, company){
+			if(err) return cb(err);
+		    if(!company)return cb("Company not found");
+
+			var promotion = company.promotions.id(id);
+			if(!promotion)
+				return cb("Promotion not found");
+			cb(null, promotion);
+
+		})
+	},
+
+	modifyPromotion: function(user, id, params, cb){
+		this.findOne({_id: user}, function(err, company){
+			if(err) return cb(err);
+		    if(!company)return cb("Company not found");
+
+			var promotion = company.promotions.id(id);
+			if(!promotion)
+				return cb("Promotion not found");
+			for(var key in params){
+				promotion[key] = params[key];
+			}
+
+			company.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+		});
+	},
+
+	deletePromotion: function(user, id, cb){
+		this.findOne({_id: user}, function(err, company){
+			if(err) return cb(err);
+		    if(!company)return cb("Company not found");
+
+			if(!company.promotions.id(id))
+				return cb("Promotion not found");
+
+			company.promotions.id(id).remove();
+			company.save(function(err){
+				if(err) return cb(err);
+				cb();
+			})
+		})
+	},
+
+
 
 };
 
 
 function getServiceRating(services){		
-		var rate =0;
-		var rates=[];
-		for(var service in services){
-			if(services[service].services.rating.length != 0){
-				for(var rating in services[service].services.rating){
-					rate += services[service].services.rating[rating].rating;
-				}
-				rate = rate / services[service].services.rating.length;
+	var rate =0;
+	var rates=[];
+	for(var service in services){
+		if(services[service].services.rating.length != 0){
+			for(var rating in services[service].services.rating){
+				rate += services[service].services.rating[rating].rating;
 			}
-			rates.push(rate);
-			rate=0;			
+			rate = rate / services[service].services.rating.length;
 		}
-		return rates;			
+		rates.push(rate);
+		rate=0;			
 	}
+	return rates;			
+}
 
 module.exports = mongoose.model("Company", CompanySchema);
 

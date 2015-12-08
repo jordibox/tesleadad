@@ -43,15 +43,33 @@ Controller.search = function(user, query, cb){
 
 		if(!services)
 			return cb(null, "Services not found");
-		
-		cb(null, services);
+		for(var service in services){
+			ServiceNameModel.findById(services[service].id_name)
+			.select('name duration keywords description')
+			.exec(function(err, service_name){
+				console.log(service_name);
+				services[service].id_name=service_name;
+				cb(null, services);
+			});
+		}
 	})
 };
 
 Controller.findById = function(user, id, cb){
 	CompanyModel.findServiceById(user, id, function(err, service){
-		if(err) return cb(err);		
+		if(err) return cb(err);	
+		/*
+		ServiceNameModel.findById(service.id_name)
+		.select('name duration keywords description')
+		.exec(function(err, service_name){
+			var s =[];
+			s.push(service);
+			s[0].id_name = service_name;
+			cb(null, s);
+			
+		});*/
 		cb(null, service);
+		
 	});
 };
 	

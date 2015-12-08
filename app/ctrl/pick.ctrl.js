@@ -26,6 +26,7 @@ Controller.search = function(query, cb){
 		if(!picks)
 			return cb("No picks");
 		
+		console.log(picks);
 		cb(null, picks);
 
 	});
