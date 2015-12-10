@@ -56,6 +56,11 @@ Controller.delete = function(query, cb){
 	})
 }
 
+Controller.getPick(customer, cb){
+			PickCtrl.search({id_customer:customer}, cb);
+	
+}
+
 Controller.rollback=function(id){
 	CustomerModel.findById(id,function(err, customer){
 		customer.remove();

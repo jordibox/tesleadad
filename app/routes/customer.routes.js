@@ -67,7 +67,7 @@ router.route("/pick")
 		});
 	})
 	.get(AuthController.checkAccess(1), function (req, res) {
-		PickCtrl.search(req.query, function (err, picks) {
+		CustomerCtrl.getPick(req.query, function (err, picks) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", picks);
