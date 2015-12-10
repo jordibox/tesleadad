@@ -3,7 +3,7 @@ var C = require("../../config/config");
 
 var CustomerCtrl=require(C.ctrl+"customer.ctrl");
 var AuthController = require(C.ctrl+"auth.ctrl");
-
+var PickCtrl = require(C.ctrl+"pick.ctrl");
 var EventCtrl = require(C.ctrl+"event.ctrl");
 var CategoryCtrl = require(C.ctrl+"category.ctrl");
 var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
