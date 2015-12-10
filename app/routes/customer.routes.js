@@ -3,7 +3,7 @@ var C = require("../../config/config");
 
 var CustomerCtrl=require(C.ctrl+"customer.ctrl");
 var AuthController = require(C.ctrl+"auth.ctrl");
-var PickCtrl = require(C.ctrl+"pick.ctrl");
+
 var EventCtrl = require(C.ctrl+"event.ctrl");
 var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
 var CompanyCtrl = require(C.ctrl+"company.ctrl");
@@ -67,7 +67,7 @@ router.route("/pick")
 		});
 	})
 	.get(AuthController.checkAccess(1), function (req, res) {
-		CustomerCtrl.getPick(req.query, function (err, picks) {
+		CustomerCtrl.getPick(req.user, function (err, picks) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", picks);
@@ -75,7 +75,7 @@ router.route("/pick")
 	})
 
 	.delete(AuthController.checkAccess(1), function (req, res) {
-		PickCtrl.delete(req.body, function (err, pick) {
+		CustomerCtrl.deletePick(req.body, req.user, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", pick);
