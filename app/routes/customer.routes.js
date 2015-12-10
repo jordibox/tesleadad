@@ -5,6 +5,7 @@ var CustomerCtrl=require(C.ctrl+"customer.ctrl");
 var AuthController = require(C.ctrl+"auth.ctrl");
 
 var EventCtrl = require(C.ctrl+"event.ctrl");
+var CategoryCtrl = require(C.ctrl+"category.ctrl");
 var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
 var CompanyCtrl = require(C.ctrl+"company.ctrl");
 var Response = require(C.lib+"response");
@@ -141,6 +142,14 @@ router.route("/rateService")
 		})
 	})
 
+router.route("/category")
+	.get(AuthController.checkAccess(1), function (req, res) {
+		CategoryCtrl.search(req.query, function(err, categories){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", categories);
+		} );
+	})
 
 router.route("/event/:id")
 	.get(AuthController.checkAccess(1), function (req, res) {

@@ -22,11 +22,27 @@ CategorySchema.statics={
 		for(var key in params){
 			query.where(key).equals(Utils.like(params[key]));
 		}
+		query.exec(cb);	
+	},
 
-		
-		query.exec(cb);
-		
+	modify: function(id, params, cb){
+		this.findById(id, function(err, category){
+			if(err) return cb(err);
+
+		    if(!category)
+				return cb("Category not found");
+
+			for(var key in params){
+				category[key] = params[key];
+			}
+
+			category.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+		});
 	}
-
 };
+
 module.exports = mongoose.model("Category", CategorySchema);

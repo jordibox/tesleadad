@@ -30,7 +30,8 @@ Controller.search = function(user, body, cb){
 Controller.findById = function(user, id, cb){
 
 	CustomerModel.findEventById(user, id, function(err, event){
-		if(err) return cb(err);		
+		if(err) return cb(err);	
+		if(!event) return cb("Event not found");	
 		cb(null, event);
 	});
 };

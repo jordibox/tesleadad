@@ -47,18 +47,17 @@ PickSchema.statics={
 				case "id_service":
 					query.where(key).equals(params[key].toString());
 					break;	
-
 				case 'beforeInitDate':
-					query.where('initDate').lt(params[key]);
+					query.where('initDate').lte(params[key]);
 					break;
 				case 'afterInitDate':
-					query.where('initDate').gt(params[key]);
+					query.where('initDate').gte(params[key]);
 					break;		
 				case 'beforeDateCreated':
-					query.where('dateCreated').lt(params[key]);
+					query.where('dateCreated').lte(params[key]);
 					break;
 				case 'afterDateCreated':
-					query.where('dateCreated').gt(params[key]);
+					query.where('dateCreated').gte(params[key]);
 					break;
 				default:
 					query.where(key).equals(Utils.like(params[key]));

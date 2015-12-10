@@ -5,6 +5,7 @@ var AuthController = require(C.ctrl+"auth.ctrl");
 var ServiceCtrl = require(C.ctrl+"service.ctrl");
 var PromotionCtrl = require(C.ctrl+"promotion.ctrl");
 var PickCtrl = require(C.ctrl+"pick.ctrl");
+var CategoryCtrl = require(C.ctrl+"category.ctrl");
 var Response = require("../lib/response");
 var router = Router();
 
@@ -64,6 +65,14 @@ router.route("/pick")
 		})
 	});
 
+router.route("/serviceName")
+	.get(AuthController.checkAccess(2),function(req, res){
+		ServiceCtrl.searchServiceName(req.query, function(err, serviceNames){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", serviceNames);
+		})
+	})
 
 	
 router.route("/service")
@@ -111,6 +120,14 @@ router.route("/promotion")
 				Response.printSuccess(res, "data", "Promotion deleted");
 		})
 	});
+router.route("/category")
+	.get(AuthController.checkAccess(2), function (req, res) {
+		CategoryCtrl.search(req.query, function(err, categories){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", categories);
+		} );
+	})
 
 router.route("/pick/:id")
 	.get(AuthController.checkAccess(2), function (req, res) {

@@ -16,16 +16,48 @@ Controller.newServiceName= function (body, cb) {
 };
 
 Controller.searchServiceName = function(query, cb){
-	ServiceNameModel.search(query, function(err, services){
+	ServiceNameModel.search(query, function(err, serviceNames){
 		if(err) return cb(err);
 
-		if(!services)
-			return cb(null, "No services");
+		if(!serviceNames)
+			return cb(null, "Services name not found");
 		
-		return cb(null, services);
+		cb(null, serviceNames);
 
 	});
 };
+
+Controller.findServiceNameById = function(id, cb){
+	ServiceNameModel.findById(id, function(err, serviceName){
+		if(err) return cb(err);	
+		if(!serviceName)return ("Service name not found");
+
+		cb(null, serviceName);
+	});
+};
+
+Controller.modifyServiceName = function(id, body,cb){
+	if(!body || !id )
+		return cb("Fields not filled");
+
+	ServiceNameModel.modify(id, body, function(err){
+		if(err) return cb(err);		
+		cb();
+	});
+};
+
+
+Controller.deleteServiceName = function(query, cb){
+	if (!query || !query._id) return cb("Fields not Filled");
+
+	ServiceNameModel.findByIdAndRemove(query._id, function (err,serviceName){
+    	if(err) return cb(err);
+
+		if(!serviceName)
+			return cb("Service name not deleted");	
+		cb();
+	})
+}
 
 Controller.newService= function(user, body, cb){
 	if (!body || !body.id_name || !body.price) return cb("Fields not Filled");

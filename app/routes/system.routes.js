@@ -16,14 +16,20 @@ router.route("/category")
 			Response.printSuccess(res, "data", categories);
 		} );
 	})
-	
-	.post(function (req, res){
-		CategoryCtrl.newCategory(req.body, function(err){ 
+	.post(AuthController.checkAccess(0), function (req, res){
+		CategoryCtrl.new(req.body, function(err){ 
 		if(err) Response.printError(res, err);
 				else
 			Response.printSuccess(res, "data", "Create Category Successfully");
 
 		});
+	})
+	.delete(AuthController.checkAccess(0), function (req, res) {
+		CategoryCtrl.delete(req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Category deleted");
+		})
 	});
 
 router.route("/prePick")
@@ -63,6 +69,45 @@ router.route("/service")
 		})
 	})
 
+router.route("/serviceName")
+	.get(AuthController.checkAccess(0),function(req, res){
+		ServiceCtrl.searchServiceName(req.query, function(err, serviceNames){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", serviceNames);
+		})
+	})
+	.post(AuthController.checkAccess(0), function(req, res){
+		ServiceCtrl.newServiceName(req.body, function(err){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", "Service name created");
+		})
+	})
+	.delete(AuthController.checkAccess(0), function (req, res) {
+		ServiceCtrl.deleteServiceName(req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Service name deleted");
+		})
+	});
+
+router.route("/serviceName/:id")
+	.put(AuthController.checkAccess(0), function (req, res) {
+		ServiceCtrl.modifyServiceName(req.params.id, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Service name modified");
+		});
+	})
+	.get(AuthController.checkAccess(0), function (req, res) {
+		ServiceCtrl.findServiceNameById(req.params.id, function (err, pick) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", pick);
+		});
+	});
+
 router.route("/pick/:id")
 	.get(AuthController.checkAccess(0), function (req, res) {
 		PickCtrl.findById(req.params.id, function (err, pick) {
@@ -72,5 +117,20 @@ router.route("/pick/:id")
 		});
 	});
 	
+router.route("/category/:id")
+	.put(AuthController.checkAccess(0), function (req, res) {
+		CategoryCtrl.modify(req.params.id, req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", "Category modified");
+		});
+	})
+	.get(AuthController.checkAccess(0), function (req, res) {
+		CategoryCtrl.findById(req.params.id, function (err, category) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", category);
+		});
+	});
 	
 module.exports = router;

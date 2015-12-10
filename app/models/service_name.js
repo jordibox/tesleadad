@@ -22,11 +22,38 @@ Service_NameSchema.statics={
 	search:function(params, cb){ //en params no meter id, todos los demas datos si
 		var query = this.find({});
 		for(var key in params){
-			query.where(key).equals(Utils.like(params[key]));
+
+			switch(key){
+				case 'greaterDuration':
+					query.where('duration').gte(params[key]);
+					break;
+				case 'lessDuration':
+					query.where('duration').lte(params[key]);
+					break;
+				default:
+					query.where(key).equals(Utils.like(params[key]));
+			}
 		}
-		
-		query.exec(cb);
-		
+		query.exec(cb);		
+	},
+
+	modify: function(id, params, cb){
+		this.findById(id, function(err, serviceName){
+			if(err) return cb(err);
+
+		    if(!serviceName)
+				return cb("Service name not found");
+
+			for(var key in params){
+				serviceName[key] = params[key];
+			}
+
+			serviceName.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+		});
 	}
 
 };
