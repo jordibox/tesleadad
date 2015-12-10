@@ -61,14 +61,16 @@ router.route("/profile")
 
 router.route("/pick")
 	.post(AuthController.checkAccess(1), function (req, res) {
-		CustomerCtrl.createPick(req.body, req.user, function (err) {
+		req.body["id_customer"] = req.user;
+		PickCtrl.new(req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Pick created");
 		});
 	})
 	.get(AuthController.checkAccess(1), function (req, res) {
-		CustomerCtrl.getPick(req.user, function (err, picks) {
+		req.query["id_customer"] = req.user;	
+		PickCtrl.search(req.query, function (err, picks) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", picks);
@@ -76,7 +78,7 @@ router.route("/pick")
 	})
 
 	.delete(AuthController.checkAccess(1), function (req, res) {
-		CustomerCtrl.deletePick(req.body, req.user, function (err, pick) {
+		PickCtrl.delete(req.body, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", pick);

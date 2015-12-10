@@ -56,6 +56,7 @@ Controller.delete = function(query, cb){
 	})
 }
 
+/*
 Controller.getPick=function(customer, cb){
 			PickCtrl.search({id_customer:customer}, cb);
 	
@@ -66,10 +67,10 @@ Controller.createPick=function(params, customer, cb){
 	PickCtrl.new(params, cb);
 }
 
-Controller.deletePick(params, customer, cb){
+Controller.deletePick=function(params, customer, cb){
 	params.id_customer=customer;
 	PickCtrl.delete(params, cb);
-}
+}*/
 
 Controller.rollback=function(id){
 	CustomerModel.findById(id,function(err, customer){
