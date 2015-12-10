@@ -60,7 +60,7 @@ router.route("/profile")
 
 router.route("/pick")
 	.post(AuthController.checkAccess(1), function (req, res) {
-		PickCtrl.new(req.body, function (err) {
+		CustomerCtrl.createPick(req.body, req.user, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Pick created");

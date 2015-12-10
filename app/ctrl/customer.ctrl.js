@@ -1,6 +1,6 @@
 
 var C=require("../../config/config");
-
+var PickCtrl = require(C.ctrl+"pick.ctrl");
 var CustomerModel = require(C.models+"customer");
 var Controller = {};
 
@@ -56,9 +56,14 @@ Controller.delete = function(query, cb){
 	})
 }
 
-Controller.getPick(customer, cb){
+Controller.getPick=function(customer, cb){
 			PickCtrl.search({id_customer:customer}, cb);
 	
+}
+
+Controller.createPick=function(params, customer, cb){
+	params.id_customer=customer;
+	PickCtrl.new(params, cb);
 }
 
 Controller.rollback=function(id){
