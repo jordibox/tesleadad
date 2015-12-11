@@ -3,11 +3,6 @@ var C = require("../../config/config");
 
 var CustomerCtrl=require(C.ctrl+"customer.ctrl");
 var AuthController = require(C.ctrl+"auth.ctrl");
-var PickCtrl = require(C.ctrl+"pick.ctrl");
-var EventCtrl = require(C.ctrl+"event.ctrl");
-var CategoryCtrl = require(C.ctrl+"category.ctrl");
-var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
-var CompanyCtrl = require(C.ctrl+"company.ctrl");
 var Response = require(C.lib+"response");
 var router = Router();
 
@@ -61,34 +56,30 @@ router.route("/profile")
 
 router.route("/pick")
 	.post(AuthController.checkAccess(1), function (req, res) {
-		req.body["id_customer"] = req.user;
-		PickCtrl.new(req.body, function (err) {
+		CustomerCtrl.newPick(req.user, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Pick created");
 		});
 	})
-	.get(AuthController.checkAccess(1), function (req, res) {
-		req.query["id_customer"] = req.user;	
-		PickCtrl.search(req.query, function (err, picks) {
+	.get(AuthController.checkAccess(1), function (req, res) {	
+		CustomerCtrl.searchPick(req.user, req.query, function (err, picks) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", picks);
 		});
 	})
-
 	.delete(AuthController.checkAccess(1), function (req, res) {
-		PickCtrl.delete(req.body, function (err, pick) {
+		CustomerCtrl.deletePick(req.body, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", pick);
-
 		});
 	});
 
 router.route("/event")
 	.post(AuthController.checkAccess(1), function (req, res) {
-		EventCtrl.newEvent(req.user, req.body, function (err) {
+		CustomerCtrl.newEvent(req.user, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Event created");
@@ -96,14 +87,14 @@ router.route("/event")
 	})
 
 	.get(AuthController.checkAccess(1), function (req, res) {
-		EventCtrl.search(req.user, req.query, function (err, events) {
+		CustomerCtrl.searchEvent(req.user, req.query, function (err, events) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", events);
 		})
 	})
 	.delete(AuthController.checkAccess(1), function (req, res) {
-		EventCtrl.delete(req.user, req.body, function (err) {
+		CustomerCtrl.deleteEvent(req.user, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Event deleted");
@@ -112,14 +103,14 @@ router.route("/event")
 
 router.route("/prePick")
 	.get(AuthController.checkAccess(1),function(req, res){
-		PrePickCtrl.search(req.user, req.query, function(err, events){
+		CustomerCtrl.searchPrePick(req.user, req.query, function(err, events){
 			if(err) Response.printError(res, err);
 				else
 			Response.printSuccess(res, "data", events);
 		})
 	})
 	.delete(AuthController.checkAccess(1), function (req, res) {
-		PrePickCtrl.delete(req.user, req.body, function (err) {
+		CustomerCtrl.deletePrePick(req.user, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "PrePick deleted");
@@ -128,7 +119,7 @@ router.route("/prePick")
 
 router.route("/reviewCompany")
 	.post(AuthController.checkAccess(1), function (req, res) {
-		CompanyCtrl.newReview(req.user, req.body, function (err) {
+		CustomerCtrl.newReviewCompany(req.user, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Review created");
@@ -137,7 +128,7 @@ router.route("/reviewCompany")
 
 router.route("/rateService")
 	.post(AuthController.checkAccess(1), function (req, res) {
-		CompanyCtrl.newRateService(req.user, req.body, function (err) {
+		CustomerCtrl.newRateService(req.user, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Service rated");
@@ -146,7 +137,7 @@ router.route("/rateService")
 
 router.route("/category")
 	.get(AuthController.checkAccess(1), function (req, res) {
-		CategoryCtrl.search(req.query, function(err, categories){
+		CustomerCtrl.searchCategory(req.query, function(err, categories){
 			if(err) Response.printError(res, err);
 				else
 			Response.printSuccess(res, "data", categories);
@@ -155,14 +146,14 @@ router.route("/category")
 
 router.route("/event/:id")
 	.get(AuthController.checkAccess(1), function (req, res) {
-		EventCtrl.findById(req.user, req.params.id, function (err, event) {
+		CustomerCtrl.getEventById(req.user, req.params.id, function (err, event) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", event);
 		});
 	})
 	.put(AuthController.checkAccess(1), function (req, res) {
-		EventCtrl.modify(req.user, req.params.id, req.body, function (err) {
+		CustomerCtrl.modifyEvent(req.user, req.params.id, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", "Event modified");
@@ -171,7 +162,7 @@ router.route("/event/:id")
 
 router.route("/prePick/:id")
 	.get(AuthController.checkAccess(1), function (req, res) {
-		PrePickCtrl.findById(req.user, req.params.id, function (err, prePick) {
+		CustomerCtrl.getPrePickById(req.user, req.params.id, function (err, prePick) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", prePick);
@@ -181,7 +172,7 @@ router.route("/prePick/:id")
 
 router.route("/pick/:id")
 	.get(AuthController.checkAccess(1), function (req, res) {
-		PickCtrl.findById(req.params.id, function (err, pick) {
+		CustomerCtrl.getPickById(req.params.id, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", pick);

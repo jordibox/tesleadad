@@ -59,7 +59,7 @@ Controller.deleteServiceName = function(query, cb){
 	})
 }
 
-Controller.newService= function(user, body, cb){
+Controller.new= function(user, body, cb){
 	if (!body || !body.id_name || !body.price) return cb("Fields not Filled");
 
 	CompanyModel.newService(user, body, function(err){
@@ -79,11 +79,12 @@ Controller.search = function(user, query, cb){
 		async.map(services, function(service, next){
 			async.waterfall([
 				function(callback){
-					ServiceNameModel.findById(service.services.id_name)
+
+					ServiceNameModel.findById(service.id_name)
 					.select('name duration keywords description')
 					.exec(function(err, service_name){
 						if(err) return callback(err);
-						service.services.id_name=service_name;
+						service.id_name=service_name;
 						callback(null, service);
 					});
 				}

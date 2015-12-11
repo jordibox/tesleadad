@@ -3,7 +3,7 @@ var C=require("../../config/config");
 var CustomerModel = require(C.models+"customer");
 var Controller = {};
 
-Controller.newEvent = function(user, body, cb){
+Controller.new = function(user, body, cb){
 	if(!body || !body.initDate || !body.endDate || !body.name )
 		return cb("Fields not filled");
 

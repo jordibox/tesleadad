@@ -2,6 +2,10 @@
 var C=require("../../config/config");
 
 var CompanyModel = require(C.models+"company");
+var ServiceCtrl = require(C.ctrl+"service.ctrl");
+var PromotionCtrl = require(C.ctrl+"promotion.ctrl");
+var PickCtrl = require(C.ctrl+"pick.ctrl");
+var CategoryCtrl = require(C.ctrl+"category.ctrl");
 var async = require("async");
 var Controller = {};
 
@@ -54,6 +58,74 @@ Controller.newRateService = function(user, body, cb){
 		cb();
 	})
 };
+
+
+//*********************PICKS
+Controller.searchPick=function(company, params, cb){
+	params["company.id_company"] = company;
+	PickCtrl.search(params, cb);
+}
+
+Controller.deletePick=function(params, cb){
+	PickCtrl.delete(params, cb);
+}
+
+Controller.getPickById=function(id, cb){
+	PickCtrl.findById(id, cb);
+}
+
+//***********************SERVICES
+Controller.searchServiceName=function(params, cb){
+	ServiceCtrl.searchServiceName(params, cb);
+}
+
+Controller.searchService=function(company, params, cb){
+	ServiceCtrl.search(company, params, cb);
+}
+
+Controller.newService=function(company, params, cb){
+	ServiceCtrl.new(params, cb);
+}
+
+Controller.modifyService = function(company, params, cb){
+	ServiceCtrl.modify(company, params, cb);
+}
+
+Controller.deleteService=function(company, params, cb){
+	ServiceCtrl.delete(company, params, cb);
+}
+
+Controller.getServiceById=function(id, cb){
+	ServiceCtrl.findById(id, cb);
+}
+
+//***********************PROMOTIONS
+Controller.searchPromotion=function(company, params, cb){
+	PromotionCtrl.search(company, params, cb);
+}
+
+Controller.newPromotion=function(company, params, cb){
+	PromotionCtrl.new(params, cb);
+}
+
+Controller.modifyPromotion = function(company, params, cb){
+	PromotionCtrl.modify(company, params, cb);
+}
+
+Controller.deletePromotion=function(company, params, cb){
+	PromotionCtrl.delete(company, params, cb);
+}
+
+Controller.getPromotionById=function(id, cb){
+	PromotionCtrl.findById(id, cb);
+}
+
+//*******************CATEGORY
+Controller.searchCategory=function(params, cb){
+	CategoryCtrl.search(params, cb);
+}
+
+
 
 
 
