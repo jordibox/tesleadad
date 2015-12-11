@@ -44,7 +44,7 @@ PickSchema.statics={
 
 				case "id_customer":  
 				case "company.id_company":
-				case "id_service":
+				case "company.id_service":
 					query.where(key).equals(params[key].toString());
 					break;	
 				case 'beforeInitDate':

@@ -106,7 +106,34 @@ CompanySchema.statics={
 	search:function(params, cb){ 
 		var query = this.find({});
 		for(var key in params){
-			query.where(key).equals(Utils.like(params[key]));
+			switch(key){
+				case 'cif':
+				case 'email':
+				case 'category':
+					query.where(key).equals(params[key]);
+					break;
+				case 'beforeRegister':
+					query.where('registerDate').lt(params[key]);
+					break;
+				case 'afterRegister':
+					query.where('registerDate').gt(params[key]);
+					break; 
+				case 'beforeLastUpdate':
+					query.where('lastUpdate').lt(params[key]);
+					break;
+				case 'afterLastUpdate':
+					query.where('lastUpdate').gt(params[key]);
+					break; 		
+				case 'beforeAccess':
+					query.where('lastAccess').lt(params[key]);
+					break;
+				case 'afterAccess':
+					query.where('lastAccess').gt(params[key]);
+					break;
+				default:query.where(key).equals(Utils.like(params[key]));
+
+			}
+			//query.where(key).equals(Utils.like(params[key]));
 		}
 		
 		query.exec(cb);	
@@ -176,6 +203,12 @@ CompanySchema.statics={
 		var lessRating=false;
 		for(var key in params){
 			switch(key){
+				case 'id_name':
+					var field = "services."+key;
+					var match={};
+					match[field] = params[key];
+					query.match(match);	
+					break;
 				case 'beforeDateCreated':
 					query.match({'services.dateCreated': {'$lte': new Date(params[key])}});
 					break;
@@ -317,12 +350,6 @@ CompanySchema.statics={
 		var query = this.aggregate([{$unwind:"$promotions"},{$match: {_id: user}}]);
 		for(var key in params){
 			switch(key){
-				case 'beforeDateCreated':
-					query.match({'promotions.dateCreated': {'$lte': new Date(params[key])}});
-					break;
-				case 'afterDateCreated':
-					query.match({'promotions.dateCreated': {'$gte': new Date(params[key])}});
-					break;
 				case 'beforeInitDate':
 					query.match({'promotions.initDate': {'$lte': new Date(params[key])}});
 					break;
@@ -344,7 +371,7 @@ CompanySchema.statics={
 				case 'greaterTimeUsed':
 					query.match({'services.timesUsed' : {'$gte' : parseInt(params[key])}});
 					break;
-				case 'lessUseTimeUsed':
+				case 'lessTimeUsed':
 					query.match({'services.timesUsed' : {'$gte' : parseInt(params[key])}});
 					break;
 				case 'beforeDateCreated':
