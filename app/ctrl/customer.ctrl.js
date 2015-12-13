@@ -150,4 +150,8 @@ Controller.searchCompany = function(params, cb){
 	CompanyCtrl.search(params, cb);
 }
 
+
+
+
+
 module.exports = Controller;

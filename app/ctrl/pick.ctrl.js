@@ -76,7 +76,6 @@ Controller.search = function(query, cb){
 							callback(null, p);
 						});
 					}
-
 				], function(err, result){
 					if(err) return next(err);
 					next(null, result);

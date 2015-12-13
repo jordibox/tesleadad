@@ -7,6 +7,7 @@ var PromotionCtrl = require(C.ctrl+"promotion.ctrl");
 var PickCtrl = require(C.ctrl+"pick.ctrl");
 var CategoryCtrl = require(C.ctrl+"category.ctrl");
 var ServiceNameModel = require(C.models+"service_name");
+var CategoryModel = require(C.models+"category");
 var async = require("async");
 var Controller = {};
 
@@ -28,29 +29,41 @@ Controller.search = function(query, cb){
 			return cb(null, "No companies");
 		
 		async.map(companies, function(companie, next){	
-			//async.map(companie.services, function(service,next{
-				ServiceNameModel.findById(companie.services[0]["id_name"])
-				.select('name duration keywords description')
-				.exec(function(err, service_name){
-					if(err) return callback(err);
+			async.waterfall([
+				function(callback){
 					var c=companie.toObject();
-					c.services[0]["id_name"]=service_name;
-					next(null, c);
-				});
-				
-			//},
+					async.map(c.services, function(service, next){
+						ServiceNameModel.findById(service["id_name"])
+						.select('name duration keywords description')
+						.exec(function(err, service_name){
+							if(err) return next(err);	
+							service["id_name"]=service_name;				
+							next(null, service);
+						});
+					},function(err, result){
+						if(err) return cb(err);	
+						c.services = result;
+						callback(null, c);
+					});
+				},
+				function(comp, callback){
+					CategoryModel.findById(comp.category)
+					.select('name description')
+					.exec(function(err, category){
+						if(err) return callback(err);
+						comp.category = category;
+						callback(null, comp);
+					});
+				}
+			],function(err, result){
+				if(err) return next(err);
+				next(null, result);
+			});
 
-			//))
-				
-				
-
-			
 		}, function(err, result){
 			if(err) return cb(err);
 			cb(null, result);
 		});	
-
-
 	
 	});
 };
@@ -109,7 +122,8 @@ Controller.searchService=function(company, params, cb){
 }
 
 Controller.newService=function(company, params, cb){
-	ServiceCtrl.new(params, cb);
+
+	ServiceCtrl.new(company, params, cb);
 }
 
 Controller.modifyService = function(company, params, cb){

@@ -3,6 +3,7 @@ var C=require("../../config/config");
 var async = require("async");
 var ServiceNameModel = require(C.models+"service_name");
 var CompanyModel = require(C.models+"company");
+var CategoryModel = require(C.models+"category");
 var Controller = {};
 
 Controller.newServiceName= function (body, cb) {
@@ -57,10 +58,12 @@ Controller.deleteServiceName = function(query, cb){
 			return cb("Service name not deleted");	
 		cb();
 	})
-}
+};
 
 Controller.new= function(user, body, cb){
-	if (!body || !body.id_name || !body.price) return cb("Fields not Filled");
+
+	if (!body || !body.id_name || (body.price==null))		
+	 	return cb("Fields not Filled");
 
 	CompanyModel.newService(user, body, function(err){
 		if(err) return (err);
@@ -75,25 +78,34 @@ Controller.search = function(user, query, cb){
 
 		if(!services || services.length==0 )
 			return cb(null, "Services not found");
-
+		
 		async.map(services, function(service, next){
-			var id_name;
-			if(!service.services)
-				id_name = service.id_name;
-			else
-				service.services.id_name
 
-			ServiceNameModel.findById(id_name)
-			.select('name duration keywords description')
-			.exec(function(err, service_name){
+			async.waterfall([
+				function(callback){
+					var id_name;
+					if(!service.services)
+						id_name = service.id_name;
+					else
+						service.services.id_name
+
+					ServiceNameModel.findById(id_name)
+					.select('name duration keywords description')
+					.exec(function(err, service_name){
+						if(err) return callback(err);
+						if(!service.services)
+							service["id_name"]=service_name;
+						else
+							service.services["id_name"]=service_name;
+						callback(null, service);
+					});
+				}
+
+				],function(err, result){
 				if(err) return next(err);
-				if(!service.services)
-					service["id_name"]=service_name;
-				else
-					service.services["id_name"]=service_name;
-				
-				next(null, service);
+				next(null, result);
 			});
+			
 		}, function(err, result){
 			if(err) return cb(err);
 			cb(null, result);
