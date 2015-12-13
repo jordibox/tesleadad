@@ -144,7 +144,7 @@ router.route("/category")
 		} );
 	})
 
-router.route("/searchservice")
+router.route("/service")
 	.get(AuthController.checkAccess(1),function(req,res){
 		CustomerCtrl.searchService(req.query, function(err, services){
 			if(err) Response.printError(res, err);
@@ -153,13 +153,30 @@ router.route("/searchservice")
 		})
 	})
 
-router.route("/searchcompany")
+router.route("/company")
 	.get(AuthController.checkAccess(1),function(req,res){
 		CustomerCtrl.searchCompany(req.query, function(err, services){
 			if(err) Response.printError(res, err);
 				else
 			Response.printSuccess(res, "data", services);
 		})
+	})
+
+router.route("/service/:id")
+	.get(AuthController.checkAccess(1), function (req, res) {
+		CustomerCtrl.getServiceById(req.query, req.params.id, function (err, event) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", event);
+		});
+	})
+router.route("/company/:id")
+	.get(AuthController.checkAccess(1), function (req, res) {
+		CustomerCtrl.getCompanyById(req.params.id, function (err, event) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", event);
+		});
 	})
 
 router.route("/event/:id")

@@ -72,31 +72,33 @@ Controller.new= function(user, body, cb){
 };
 
 Controller.search = function(user, query, cb){
-
 	CompanyModel.searchService(user, query, function(err, services){
 		if(err) return cb(err);
 
 		if(!services || services.length==0 )
 			return cb(null, "Services not found");
-		
+
 		async.map(services, function(service, next){
 
 			async.waterfall([
 				function(callback){
 					var id_name;
+
 					if(!service.services)
 						id_name = service.id_name;
 					else
-						service.services.id_name
+						id_name=service.services.id_name
 
 					ServiceNameModel.findById(id_name)
 					.select('name duration keywords description')
 					.exec(function(err, service_name){
 						if(err) return callback(err);
+
 						if(!service.services)
 							service["id_name"]=service_name;
 						else
 							service.services["id_name"]=service_name;
+
 						callback(null, service);
 					});
 				}
@@ -114,16 +116,16 @@ Controller.search = function(user, query, cb){
 };
 
 Controller.findById = function(user, id, cb){
+
 	CompanyModel.findServiceById(user, id, function(err, service){
 		if(err) return cb(err);	
 		
 		ServiceNameModel.findById(service.id_name)
 		.select('name duration keywords description')
 		.exec(function(err, service_name){
-			var serviceData = [];
-			serviceData.push(pick);
-			serviceData.push({"serviceData": service_name});
-			cb(null, serviceData);			
+			service =service.toObject();
+			service.id_name = service_name;
+			cb(null, service);			
 		});		
 	});
 };

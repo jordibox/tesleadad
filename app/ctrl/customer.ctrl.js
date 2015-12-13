@@ -146,10 +146,19 @@ Controller.searchService = function(params, cb){
 		ServiceCtrl.search(params.id_company, params, cb);
 }
 
+Controller.getServiceById = function(params, id, cb){
+	if(!params || !params.id_company)
+		return cb("Fields not filled");
+	ServiceCtrl.findById(params.id_company, id, cb);
+}
+
 Controller.searchCompany = function(params, cb){
 	CompanyCtrl.search(params, cb);
 }
 
+Controller.getCompanyById = function(id, cb){
+	CompanyCtrl.findById(id, cb);
+}
 
 
 

@@ -12,7 +12,8 @@ var CategorySchema = new Schema({
 		unique: true,
 		required: true
 	},
-	description: String
+	description: String,
+	image: String
 });
 
 

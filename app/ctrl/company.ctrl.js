@@ -75,7 +75,40 @@ Controller.findById = function(id, cb){
 		if(!company)
 			return cb("No company found");
 		
-		return cb(null, company);
+		async.waterfall([
+			function(callback){
+				company=company.toObject();
+				async.map(company.services, function(service, next){
+					ServiceNameModel.findById(service["id_name"])
+					.select('name duration keywords description')
+					.exec(function(err, service_name){
+						if(err) return next(err);	
+						service["id_name"]=service_name;				
+						next(null, service);
+					});
+				},function(err, result){
+					if(err) return cb(err);	
+					company.services = result;
+					callback(null, company);
+				});
+			},
+			function(comp, callback){
+				CategoryModel.findById(comp.category)
+				.select('name description')
+				.exec(function(err, category){
+					if(err) return callback(err);
+					comp.category = category;
+					callback(null, comp);
+				});
+			}
+		],function(err, result){
+			if(err) return next(err);
+			cb(null, result);
+		});
+
+
+
+		
 	});
 };
 
