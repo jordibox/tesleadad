@@ -77,30 +77,22 @@ Controller.search = function(user, query, cb){
 			return cb(null, "Services not found");
 
 		async.map(services, function(service, next){
-			async.waterfall([
-				function(callback){
-					var id_name;
-					if(!service.services)
-						id_name = service.id_name;
-					else
-						service.services.id_name
+			var id_name;
+			if(!service.services)
+				id_name = service.id_name;
+			else
+				service.services.id_name
 
-					ServiceNameModel.findById(id_name)
-					.select('name duration keywords description')
-					.exec(function(err, service_name){
-						if(err) return callback(err);
-						if(!service.services)
-							service["id_name"]=service_name;
-						else
-							service.services["id_name"]=service_name;
-						
-						callback(null, service);
-					});
-				}
-
-			], function(err, result){
+			ServiceNameModel.findById(id_name)
+			.select('name duration keywords description')
+			.exec(function(err, service_name){
 				if(err) return next(err);
-				next(null, result);
+				if(!service.services)
+					service["id_name"]=service_name;
+				else
+					service.services["id_name"]=service_name;
+				
+				next(null, service);
 			});
 		}, function(err, result){
 			if(err) return cb(err);
