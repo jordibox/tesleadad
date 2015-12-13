@@ -4,6 +4,7 @@ var PickCtrl = require(C.ctrl+"pick.ctrl");
 var EventCtrl = require(C.ctrl+"event.ctrl");
 var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
 var CompanyCtrl = require(C.ctrl+"company.ctrl");
+var ServiceCtrl = require(C.ctrl+"service.ctrl");
 var CategoryCtrl = require(C.ctrl+"category.ctrl");
 var CustomerModel = require(C.models+"customer");
 var Controller = {};
@@ -134,6 +135,19 @@ Controller.rollback=function(id){
 	CustomerModel.findById(id,function(err, customer){
 		customer.remove();
 	});
+}
+
+
+//******************SEARCH
+Controller.searchService = function(params, cb){
+	if(!params.id_company)
+		ServiceCtrl.search(0, params, cb);
+	else
+		ServiceCtrl.search(params.id_company, params, cb);
+}
+
+Controller.searchCompany = function(params, cb){
+	CompanyCtrl.search(params, cb);
 }
 
 module.exports = Controller;

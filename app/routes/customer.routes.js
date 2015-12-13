@@ -144,6 +144,24 @@ router.route("/category")
 		} );
 	})
 
+router.route("/searchservice")
+	.get(AuthController.checkAccess(1),function(req,res){
+		CustomerCtrl.searchService(req.query, function(err, services){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", services);
+		})
+	})
+
+router.route("/searchcompany")
+	.get(AuthController.checkAccess(1),function(req,res){
+		CustomerCtrl.searchCompany(req.query, function(err, services){
+			if(err) Response.printError(res, err);
+				else
+			Response.printSuccess(res, "data", services);
+		})
+	})
+
 router.route("/event/:id")
 	.get(AuthController.checkAccess(1), function (req, res) {
 		CustomerCtrl.getEventById(req.user, req.params.id, function (err, event) {

@@ -79,12 +79,21 @@ Controller.search = function(user, query, cb){
 		async.map(services, function(service, next){
 			async.waterfall([
 				function(callback){
+					var id_name;
+					if(!service.services)
+						id_name = service.id_name;
+					else
+						service.services.id_name
 
-					ServiceNameModel.findById(service.id_name)
+					ServiceNameModel.findById(id_name)
 					.select('name duration keywords description')
 					.exec(function(err, service_name){
 						if(err) return callback(err);
-						service.id_name=service_name;
+						if(!service.services)
+							service["id_name"]=service_name;
+						else
+							service.services["id_name"]=service_name;
+						
 						callback(null, service);
 					});
 				}
