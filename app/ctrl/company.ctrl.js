@@ -6,6 +6,7 @@ var ServiceCtrl = require(C.ctrl+"service.ctrl");
 var PromotionCtrl = require(C.ctrl+"promotion.ctrl");
 var PickCtrl = require(C.ctrl+"pick.ctrl");
 var CategoryCtrl = require(C.ctrl+"category.ctrl");
+var ServiceNameModel = require(C.models+"service_name");
 var async = require("async");
 var Controller = {};
 
@@ -23,10 +24,33 @@ Controller.search = function(query, cb){
 	CompanyModel.search(query, function(err, companies){
 		if(err) return cb(err);
 
-		if(!companies)
+		if(!companies || companies.length==0 )
 			return cb(null, "No companies");
 		
-		return cb(null, companies);
+		async.map(companies, function(companie, next){
+			async.waterfall([
+				function(callback){
+					ServiceNameModel.findById(companie.services[0]["id_name"])
+					.select('name duration keywords description')
+					.exec(function(err, service_name){
+						if(err) return callback(err);
+						var c=companie.toObject();
+						c.services[0]["id_name"]=service_name;
+						callback(null, c);
+					});
+				}
+
+			], function(err, result){
+				if(err) return next(err);
+				next(null, result);
+			});
+		}, function(err, result){
+			if(err) return cb(err);
+			cb(null, result);
+		});	
+
+
+	
 	});
 };
 
