@@ -101,6 +101,16 @@ Controller.search = function(user, query, cb){
 
 						callback(null, service);
 					});
+				},
+				function(s, callback){
+					CategoryModel.findById(s.category)
+						.select('name description')
+						.exec(function(err, category){
+							if(err) return callback(err);
+
+							s.category = category;
+							callback(null, s);
+						});
 				}
 
 				],function(err, result){

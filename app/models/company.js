@@ -133,20 +133,18 @@ CompanySchema.statics={
 				default:query.where(key).equals(Utils.like(params[key]));
 
 			}
-			//query.where(key).equals(Utils.like(params[key]));
+			
 		}
 		
 		query.exec(cb);	
 	},
 
 	newReview: function(user, params, cb){
-		//{$addToSet: {'review.id_customer': user}},
 		this.findOneAndUpdate({_id: params.company_id},  {$addToSet:{review:{id_customer: user}}}, {safe:true, upsert:true, new:true},  function(err, company){
 			if(err)return cb(err);
 			if(!company)return cb("Company not found");
 
-			var service = company.services.id(params.service_id);
-			//review.id_customer = user;
+			var review = company.review[company.review.length-1];
 			review.rating = params.rating;
 			review.description = params.description;
 			review.date = new Date();
