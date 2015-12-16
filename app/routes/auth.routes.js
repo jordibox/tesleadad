@@ -26,7 +26,7 @@ router.route("/logout")
 		});
 	});
 
-touer.router("/check")
+router.route("/check")
 	.get(function(req, res){
 		AuthCtrl.check(req.query,function(err, user){
 			if(err) 
