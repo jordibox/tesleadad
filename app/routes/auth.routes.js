@@ -25,6 +25,16 @@ router.route("/logout")
 				Response.printSuccess(res, "data", "Successful");
 		});
 	});
+
+touer.router("/check")
+	.get(function(req, res){
+		AuthCtrl.check(req.query,function(err, user){
+			if(err) 
+				Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", user);
+		})
+	})
 	
 
 

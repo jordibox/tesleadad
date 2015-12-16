@@ -76,4 +76,16 @@ AuthController.logout=function(token, cb){
 	AuthModel.removeToken(token, cb);
 }
 
+AuthController.check=function(query, cb){
+	if(!query.email) return cb("Fields not filled"):
+	AuthModel.findOne({email: query.email},function(err, user){
+		if(err)return cb(err);
+
+		if(!user)
+			return cb(null, false);
+
+		cb(null, true);
+	});
+}
+
 module.exports = AuthController;
