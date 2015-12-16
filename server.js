@@ -16,7 +16,7 @@ require(C.routes+"routes.js")(app);
 
 
 app.listen(port, function(){
-	console.log(process.env.db);
+
     console.log("Conectado: "+app.get("port"));
 });
 

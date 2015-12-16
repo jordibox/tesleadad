@@ -17,7 +17,7 @@ var secure_path=function(basename){
 var Config = Object.create(null);
 Config.prototype = {};
 var config = Object.create(Config.prototype, {
-    db: secure("mongodb://pick:pick@ds053894.mongolab.com:53894/pickyourday"),
+    db: secure(process.env.db),
 	db_secure: secure("mongodb://127.0.0.1:27017/pickyourday"),
     root: secure(rootPath),
     config: secure_path("config/"),
@@ -25,7 +25,7 @@ var config = Object.create(Config.prototype, {
     lib:secure_path("app/lib/"),
     models:secure_path("app/models/"),
     ctrl:secure_path("app/ctrl/"),
-	secret:secure("pickyourday")
+	secret:secure(process.env.secret)
 });
 
 
