@@ -6,3 +6,4 @@ public/bower_components/
 typings/
 
 *.log
+*.bat
