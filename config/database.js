@@ -9,8 +9,6 @@ module.exports=function(){
 
     mongodb.on("error", function(err){
         console.log("Ha ocurrido este error durante la conexion con mongodb: "+err.message);
-	
-		
 		});
 
 		mongodb.once('open', function(){
