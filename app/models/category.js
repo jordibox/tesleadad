@@ -13,7 +13,10 @@ var CategorySchema = new Schema({
 		required: true
 	},
 	description: String,
-	image: String
+	image: {
+		src:String,
+		alt:String
+	}
 });
 
 

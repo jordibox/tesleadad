@@ -9,14 +9,14 @@ router.route("/category")
 		SystemCtrl.searchCategory(req.query, function(err, categories){
 			if(err) Response.printError(res, err);
 				else
-			Response.printSuccess(res, "data", categories);
+			Response.printSuccess(res, "categories", categories);
 		} );
 	})
 	.post(AuthController.checkAccess(0), function (req, res){
 		SystemCtrl.newCategory(req.body, function(err){ 
 		if(err) Response.printError(res, err);
 				else
-			Response.printSuccess(res, "data", "Create Category Successfully");
+			Response.printSuccess(res, "categories", "Create Category Successfully");
 
 		});
 	})
@@ -24,7 +24,7 @@ router.route("/category")
 		SystemCtrl.deleteCategory(req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", "Category deleted");
+				Response.printSuccess(res, "categories", "Category deleted");
 		})
 	});
 

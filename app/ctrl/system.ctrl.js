@@ -70,4 +70,4 @@ Controller.deleteServiceName=function(params, cb){
 Controller.getServiceNameById=function(id, cb){
 	ServiceCtrl.findServiceNameById(id, cb);
 }
-
+module.exports=Controller;
