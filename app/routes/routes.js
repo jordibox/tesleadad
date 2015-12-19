@@ -20,6 +20,8 @@ module.exports = function (app) {
 	router.use("/customer", require("./customer.routes.js"));
 	router.use("/system", require("./system.routes.js"));
 	router.use("/company", require("./company.routes.js"));
-
+	router.use("/geturl", function(req, res){
+		console.log(req);
+	})
 	app.use("/api", router);
 }
