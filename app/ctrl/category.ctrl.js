@@ -8,9 +8,9 @@ Controller.new = function (body, cb) {
 	if (!body || !body.name) return cb("Fields not Filled");
 	
 	var category = new CategoryModel(body);
-	category.save(function (err) {
+	category.save(function (err, result) {
 		if (err) return cb(err);
-		cb();
+		cb(null, result);
 	});
 };
 
@@ -46,10 +46,10 @@ Controller.modify = function(id, body,cb){
 };
 
 
-Controller.delete = function(query, cb){
-	if (!query || !query._id) return cb("Fields not Filled");
+Controller.delete = function(id, cb){
+	if (!id) return cb("Fields not Filled");
 
-	CategoryModel.findByIdAndRemove(query._id, function (err,category){
+	CategoryModel.findByIdAndRemove(id, function (err,category){
     	if(err) return cb(err);
 
 		if(!category)

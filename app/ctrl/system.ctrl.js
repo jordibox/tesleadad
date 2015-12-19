@@ -20,8 +20,8 @@ Controller.modifyCategory = function(id, params, cb){
 	CategoryCtrl.modify(id, params, cb);
 }
 
-Controller.deleteCategory=function(params, cb){
-	CategoryCtrl.delete(params, cb);
+Controller.deleteCategory=function(id, cb){
+	CategoryCtrl.delete(id, cb);
 }
 
 Controller.getCategoryById=function(id, cb){

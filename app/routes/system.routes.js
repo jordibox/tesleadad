@@ -13,21 +13,14 @@ router.route("/category")
 		} );
 	})
 	.post(AuthController.checkAccess(0), function (req, res){
-		SystemCtrl.newCategory(req.body, function(err){ 
+		SystemCtrl.newCategory(req.body, function(err, category){ 
 		if(err) Response.printError(res, err);
 				else
-			Response.printSuccess(res, "categories", "Create Category Successfully");
+			Response.printSuccess(res, "category", category);
 
 		});
 	})
-	.delete(AuthController.checkAccess(0), function (req, res) {
-		SystemCtrl.deleteCategory(req.body, function (err) {
-			if (err) Response.printError(res, err);
-			else
-				Response.printSuccess(res, "categories", "Category deleted");
-		})
-	});
-
+	
 router.route("/prePick")
 	.post(AuthController.checkAccess(0), function(req, res){
 		SystemCtrl.calculatePrePicks(req.body, function(err){
@@ -125,6 +118,14 @@ router.route("/category/:id")
 			else
 				Response.printSuccess(res, "data", category);
 		});
+	})
+    .delete(AuthController.checkAccess(0), function (req, res) {
+		SystemCtrl.deleteCategory(req.params.id, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "categories", "Category deleted");
+		})
 	});
+
 	
 module.exports = router;
