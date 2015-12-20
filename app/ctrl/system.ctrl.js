@@ -46,7 +46,7 @@ Controller.getPickById=function(id, cb){
 }
 
 Controller.deletePick=function(id, cb){
-    
+    	PickCtrl.delete(id, cb);
 }
 
 

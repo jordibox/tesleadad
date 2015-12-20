@@ -36,7 +36,8 @@ Controller.search = function(query, cb){
 						CustomerModel.findById(pick.id_customer, 'name surname email location',function(err, customer){
 							if(err) return callback(err);
 							var pObj=pick.toObject();
-							pObj.id_customer =customer;
+                            delete pObj.id_customer
+							pObj.customer =customer;
 							callback(null, pObj);
 						});
 					},
@@ -44,35 +45,41 @@ Controller.search = function(query, cb){
 						CompanyModel.findById(p.company.id_company, 'cif email name category promotions locations phone photos ',function(err, company){
 							if(err) return callback(err);
 							var c=company.toObject();
-							p.company.id_company =c;
+                            delete p.company.id_company;
+                            p.service=p.company.id_service;
+                          
+							p.company =c;
 							callback(null, p);
 						});
 					},
 					function(p, callback){
-						CompanyModel.findServiceById(p.company.id_company, p.company.id_service, function(err, service){
+                    
+						CompanyModel.findServiceById(p.company._id, p.service, function(err, service){
 							if(err) return callback(err);
 							var s =service.toObject();
-							p.company.id_service = s;
+                            
+							p.service = s;
 							callback(null, p);
 						})
 					}, 
 					function(p, callback){
-						ServiceNameModel.findById(p.company.id_service.id_name)
+						ServiceNameModel.findById(p.service.id_name)
 						.select('name duration keywords description')
 						.exec(function(err, service_name){
 							if(err) return callback(err);
-							p.company.id_service.id_name = service_name;
+                            delete p.service.id_name;
+							p.service.metadata = service_name;
 
 							callback(null, p);
 						});
 					},
 					function(p, callback){
-						CategoryModel.findById(p.company.id_company.category)
+						CategoryModel.findById(p.company.category)
 						.select('name description')
 						.exec(function(err, category){
 							if(err) return callback(err);
 
-							p.company.id_company.category = category;
+							p.company.category = category;
 							callback(null, p);
 						});
 					}

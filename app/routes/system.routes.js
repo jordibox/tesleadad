@@ -98,6 +98,7 @@ router.route("/default_service/:id")
 
 router.route("/pick/:id")
 	.get(AuthController.checkAccess(0), function (req, res) {
+       
 		SystemCtrl.getPickById(req.params.id, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
