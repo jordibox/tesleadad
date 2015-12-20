@@ -114,11 +114,11 @@ Controller.findById = function(id, cb){
 	});
 };
 
-Controller.delete = function(query, cb){
+Controller.delete = function(id, cb){
 
-	if (!query || !query._id) return cb("Fields not Filled");
+	if ( !id) return cb("Fields not Filled");
 
-	PickModel.findByIdAndRemove(query._id, function (err,pick){
+	PickModel.findByIdAndRemove(id, function (err,pick){
     	if(err) return cb(err);
 
 		if(!pick)

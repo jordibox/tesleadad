@@ -45,6 +45,10 @@ Controller.getPickById=function(id, cb){
 	PickCtrl.findById(id, cb);
 }
 
+Controller.deletePick=function(id, cb){
+    
+}
+
 
 //******************SERVICES
 Controller.searchService=function(params, cb){
@@ -63,8 +67,8 @@ Controller.modifyServiceName = function(id, params, cb){
 	ServiceCtrl.modifyServiceName(id, params, cb);
 }
 
-Controller.deleteServiceName=function(params, cb){
-	ServiceCtrl.deleteServiceName(params, cb);
+Controller.deleteServiceName=function(id, cb){
+	ServiceCtrl.deleteServiceName(id, cb);
 }
 
 Controller.getServiceNameById=function(id, cb){

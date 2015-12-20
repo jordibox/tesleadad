@@ -10,9 +10,9 @@ Controller.newServiceName= function (body, cb) {
 	if (!body || !body.name) return cb("Fields not Filled");
 	
 	var service = new ServiceNameModel(body);
-	service.save(function (err) {
+	service.save(function (err, result) {
 		if (err) return cb(err);
-		cb();
+		cb(null, result);
 	});
 };
 
@@ -48,10 +48,10 @@ Controller.modifyServiceName = function(id, body,cb){
 };
 
 
-Controller.deleteServiceName = function(query, cb){
-	if (!query || !query._id) return cb("Fields not Filled");
+Controller.deleteServiceName = function(id, cb){    
+	if (!id) return cb("Fields not Filled");
 
-	ServiceNameModel.findByIdAndRemove(query._id, function (err,serviceName){
+	ServiceNameModel.findByIdAndRemove(id, function (err,serviceName){
     	if(err) return cb(err);
 
 		if(!serviceName)

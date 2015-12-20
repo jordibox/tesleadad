@@ -72,8 +72,8 @@ Controller.newPick=function(customer, params, cb){
 	PickCtrl.new(params, cb);
 }
 
-Controller.deletePick=function(params, cb){
-	PickCtrl.delete(params, cb);
+Controller.deletePick=function(id, cb){
+	PickCtrl.delete(id, cb);
 }
 
 Controller.getPickById=function(id, cb){

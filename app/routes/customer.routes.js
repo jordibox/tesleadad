@@ -69,13 +69,7 @@ router.route("/pick")
 				Response.printSuccess(res, "data", picks);
 		});
 	})
-	.delete(AuthController.checkAccess(1), function (req, res) {
-		CustomerCtrl.deletePick(req.body, function (err, pick) {
-			if (err) Response.printError(res, err);
-			else
-				Response.printSuccess(res, "data", pick);
-		});
-	});
+	
 
 router.route("/event")
 	.post(AuthController.checkAccess(1), function (req, res) {
@@ -208,6 +202,13 @@ router.route("/prePick/:id")
 router.route("/pick/:id")
 	.get(AuthController.checkAccess(1), function (req, res) {
 		CustomerCtrl.getPickById(req.params.id, function (err, pick) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "data", pick);
+		});
+	})
+    .delete(AuthController.checkAccess(1), function (req, res) {
+		CustomerCtrl.deletePick(req.params.id, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "data", pick);

@@ -42,7 +42,7 @@ router.route("/pick")
 		SystemCtrl.searchPick(req.query, function (err, picks) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", picks);
+				Response.printSuccess(res, "picks", picks);
 		});
 	})
 
@@ -56,43 +56,44 @@ router.route("/service")
 		})
 	})
 
-router.route("/serviceName")
+router.route("/default_service")
 	.get(AuthController.checkAccess(0),function(req, res){
 		SystemCtrl.searchServiceName(req.query, function(err, serviceNames){
 			if(err) Response.printError(res, err);
 				else
-			Response.printSuccess(res, "data", serviceNames);
+			Response.printSuccess(res, "default_services", serviceNames);
 		})
 	})
 	.post(AuthController.checkAccess(0), function(req, res){
-		SystemCtrl.newServiceName(req.body, function(err){
+		SystemCtrl.newServiceName(req.body, function(err, result){
 			if(err) Response.printError(res, err);
 				else
-			Response.printSuccess(res, "data", "Service name created");
-		})
-	})
-	.delete(AuthController.checkAccess(0), function (req, res) {
-		SystemCtrl.deleteServiceName(req.body, function (err) {
-			if (err) Response.printError(res, err);
-			else
-				Response.printSuccess(res, "data", "Service name deleted");
+			Response.printSuccess(res, "default_service", result);
 		})
 	});
 
-router.route("/serviceName/:id")
+
+router.route("/default_service/:id")
 	.put(AuthController.checkAccess(0), function (req, res) {
 		SystemCtrl.modifyServiceName(req.params.id, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", "Service name modified");
+				Response.printSuccess(res, "default_service", "Default Service modified");
 		});
 	})
 	.get(AuthController.checkAccess(0), function (req, res) {
-		SystemCtrl.getServiceNameById(req.params.id, function (err, pick) {
+		SystemCtrl.getServiceNameById(req.params.id, function (err, default_service) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", pick);
+				Response.printSuccess(res, "default_service", default_service);
 		});
+	})
+    	.delete(AuthController.checkAccess(0), function (req, res) {
+		SystemCtrl.deleteServiceName(req.params.id, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "default_service", "Default Service deleted");
+		})
 	});
 
 router.route("/pick/:id")
@@ -100,23 +101,30 @@ router.route("/pick/:id")
 		SystemCtrl.getPickById(req.params.id, function (err, pick) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", pick);
+				Response.printSuccess(res, "pick", pick);
 		});
-	});
+	})
+    .delete(AuthController.checkAccess(0), function (req, res) {
+		SystemCtrl.deletePick(req.params.id, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "pick", "Deleted");
+		});
+	})
 	
 router.route("/category/:id")
 	.put(AuthController.checkAccess(0), function (req, res) {
 		SystemCtrl.modifyCategory(req.params.id, req.body, function (err) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", "Category modified");
+				Response.printSuccess(res, "category", "Category modified");
 		});
 	})
 	.get(AuthController.checkAccess(0), function (req, res) {
 		SystemCtrl.getCategoryById(req.params.id, function (err, category) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", category);
+				Response.printSuccess(res, "category", category);
 		});
 	})
     .delete(AuthController.checkAccess(0), function (req, res) {
