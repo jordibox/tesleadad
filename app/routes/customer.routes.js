@@ -31,18 +31,12 @@ router.route("")
 		CustomerCtrl.search(req.query, function (err, customers) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", customers);
+				Response.printSuccess(res, "customers", customers);
 		});
 	})
+    
 
-	.delete(function (req, res) {
-		CustomerCtrl.delete(req.body, function (err, customer) {
-			if (err) Response.printError(res, err);
-			else
-				Response.printSuccess(res, "data", customer);
-
-		});
-	});
+	
 
 router.route("/profile")
 	.get(AuthController.checkAccess(1), function (req, res) {
@@ -220,7 +214,23 @@ router.route("/:id")
 		CustomerCtrl.findById(req.params.id, function (err, customer) {
 			if (err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", customer);
+				Response.printSuccess(res, "customer", customer);
+		});
+	})
+    
+    .put(AuthController.checkAccess(0), function (req, res) {
+	       CustomerCtrl.modify(req.params.id, req.body, function (err, customer) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "customer", customer);
+		});
+	})
+    .delete(function (req, res) {
+		CustomerCtrl.delete(req.body, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "customer", "Deleted");
+
 		});
 	});
 

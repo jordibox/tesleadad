@@ -323,7 +323,25 @@ CustomerSchema.statics={
 				cb();
 			})
 		})
-	}
+	}, 
+    modify:function(id, params, cb){
+        this.findById(id, function(err, customer){
+			if(err) return cb(err);
+
+		    if(!customer)
+				return cb("Category not found");
+
+			for(var key in params){
+				customer[key] = params[key];
+			}
+
+			customer.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+		});
+    }
 
 
 }

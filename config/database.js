@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var C=require("./config.js");
 
 
-module.exports=function(){
+module.exports=function(cb){
 
     
     var mongodb=mongoose.connect(C.db).connection;
@@ -12,8 +12,10 @@ module.exports=function(){
 		});
 
 		mongodb.once('open', function(){
-        console.log("Conexion con MongoDB");}
-		);
+        console.log("Conexion con MongoDB");
+        
+        cb();
+        });
 		
 		mongodb.once('close', function(){
         console.log("Conexion cerrada con MongoDB");

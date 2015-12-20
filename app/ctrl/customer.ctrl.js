@@ -44,12 +44,23 @@ Controller.findById = function(id, cb){
 		return cb(null, customer);
 	});
 }
+
+Controller.modify = function(id, body, cb){
+
+    if(!body || !id )
+		return cb("Fields not filled");
+
+	CustomerModel.modify(id, body, function(err){
+		if(err) return cb(err);		
+		cb();
+	});
+}
 	
-Controller.delete = function(query, cb){
+Controller.delete = function(id, cb){
 
-	if (!query || !query._id) return cb("Fields not Filled");
+	if (!id) return cb("Fields not Filled");
 
-	CustomerModel.findByIdAndRemove(query._id, function (err,customer){
+	CustomerModel.findByIdAndRemove(id, function (err,customer){
 
     	if(err) return cb(err);
 

@@ -121,7 +121,7 @@ Controller.findById = function(id, cb){
 	});
 };
 
-Controller.delete = function(id, cb){
+Controller.delete = function(id, body, cb){
 
 	if ( !id) return cb("Fields not Filled");
 
