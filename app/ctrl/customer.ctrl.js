@@ -15,7 +15,7 @@ Controller.newUser = function (body, cb) { //datos del body, callback
 	if (!body || !body.email || !body.password) return cb("Fields not Filled");
 	
 	var customer = new CustomerModel(body);
-
+	customer.registerDate=new Date();
 	customer.save(function (err, result) {
 		if (err) return cb(err);
 		
