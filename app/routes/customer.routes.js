@@ -225,8 +225,8 @@ router.route("/:id")
 				Response.printSuccess(res, "customer", customer);
 		});
 	})
-    .delete(function (req, res) {
-		CustomerCtrl.delete(req.body, function (err) {
+    .delete(AuthController.checkAccess(0),function (req, res) {
+		CustomerCtrl.delete(req.params.id, function (err) {
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "customer", "Deleted");

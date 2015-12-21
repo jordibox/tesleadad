@@ -88,4 +88,16 @@ AuthController.check=function(query, cb){
 	});
 }
 
+AuthController.UnableAccess=function(email, cb){
+	AuthModel.findOne({email:email}, function(err, auth){
+		if(err)return cb(err);
+		auth.remove(function(err){
+			if(err)return cb(err);
+			cb();
+		});
+		
+	});
+	
+}
+
 module.exports = AuthController;

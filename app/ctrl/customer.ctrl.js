@@ -1,6 +1,7 @@
 
 var C=require("../../config/config");
 var PickCtrl = require(C.ctrl+"pick.ctrl");
+var AuthCtrl = require(C.ctrl+"auth.ctrl");
 var EventCtrl = require(C.ctrl+"event.ctrl");
 var PrePickCtrl = require(C.ctrl+"prePick.ctrl");
 var CompanyCtrl = require(C.ctrl+"company.ctrl");
@@ -60,14 +61,22 @@ Controller.delete = function(id, cb){
 
 	if (!id) return cb("Fields not Filled");
 
-	CustomerModel.findByIdAndRemove(id, function (err,customer){
+	CustomerModel.findOne({_id:id}, function (err,customer){
 
     	if(err) return cb(err);
 
 		if(!customer)
-			return cb(null, "No customer deleted");
+			return cb(null, "No customer");
 		
-		return cb(null, "Customer deleted");
+		AuthCtrl.UnableAccess(customer.email, function(err){
+			if(err)return cb(err);
+			customer.remove(function(err){
+				if(err)return cb(err);
+				cb(null, "Customer deleted");
+			});
+		});
+		
+		
 
 	})
 }
