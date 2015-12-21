@@ -336,7 +336,7 @@ CustomerSchema.statics={
 			}
 			
 			customer.lastUpdate=new Date();
-			console.log(customer);
+		
 			customer.save(function(err){
 				if(err) return cb(err);				
 				cb();
