@@ -28,7 +28,7 @@ Controller.search = function (query, cb) {
         if (err) return cb(err);
 
         if (!picks || picks.length == 0)
-            return cb("Picks not found");
+            return cb(null, []);
 
         async.map(picks, function (pick, next) {
             async.waterfall([
