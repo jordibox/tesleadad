@@ -92,6 +92,8 @@ Controller.delete = function (id, cb) {
                }, function done(){
                    next(null, customer);
                })
+            }else{
+                next(null, customer);
             }
             
             
