@@ -47,7 +47,7 @@ Controller.search = function (query, cb) {
                         var c = company.toObject();
                         delete p.company.id_company;
                         p.service = p.company.id_service;
-
+                     
                         p.company = c;
                         callback(null, p);
                     });
@@ -56,11 +56,12 @@ Controller.search = function (query, cb) {
 
                     CompanyModel.findServiceById(p.company._id, p.service, function (err, service) {
                         //if(err) return callback(err);
-                        if (s) {
-                            var s = service.toObject();
-
+                        console.log(service);
+                        if (service) {
+                          
+                            var s = service.toObject();          
                             p.service = s;
-
+                            p.service.default=service;	
                         }
                         callback(null, p);
 
