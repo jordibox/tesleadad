@@ -82,6 +82,7 @@ var CompanySchema = new Schema({
 	phone: [String],
 	keywords: [String],
 	locations:[{
+        name:String,
 		country: String,
 		province: String,
 		city: String,

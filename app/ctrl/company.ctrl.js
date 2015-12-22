@@ -14,7 +14,7 @@ var async = require("async");
 var Controller = {};
 
 Controller.newCompany = function (body, cb) {
-	if (!body || !body.cif || !body.name || !body.category || !body.email) return cb("Fields not Filled");
+	if (!body || !body.cif || !body.email || !body.password) return cb("Fields not Filled");
 	var company = new CompanyModel(body);
     company.registerDate=new Date();
 
@@ -32,6 +32,7 @@ Controller.search = function(query, cb){
 			return cb(null, "No companies");
 		
 		async.map(companies, function(companie, next){	
+            if(!companie)return next();
 			async.waterfall([
 				function(callback){
 					var c=companie.toObject();
