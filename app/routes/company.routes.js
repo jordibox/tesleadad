@@ -10,6 +10,7 @@ router.route("")
 		CompanyCtrl.newCompany(req.body, function (err, user) {
 			if (err) Response.printError(res, err);
 			else {
+                req.showUser=user;
 				req.user = user._id;
 				next();
 			}
@@ -22,7 +23,7 @@ router.route("")
 				Response.printError(res, err)
 			}
 			else
-				Response.printSuccess(res, "data", "Register Successfully");
+				Response.printSuccess(res, "company", req.showUser);
 		})
 	}
 		)
@@ -30,7 +31,7 @@ router.route("")
 		CompanyCtrl.search(req.query, function(err, companies){
 			if(err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", companies);
+				Response.printSuccess(res, "companies", companies);
 		});
 	});
 
@@ -170,8 +171,23 @@ router.route("/:id")
 		CompanyCtrl.findById(req.params.id, function(err, company){
 			if(err) Response.printError(res, err);
 			else
-				Response.printSuccess(res, "data", company);
+				Response.printSuccess(res, "company", company);
 		} );
+	})
+     .put(AuthController.checkAccess(0), function (req, res) {
+	       CompanyCtrl.modify(req.params.id, req.body, function (err, company) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "company", company);
+		});
+	})
+    .delete(AuthController.checkAccess(0),function (req, res) {
+		CompanyCtrl.delete(req.params.id, function (err) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "company", "Deleted");
+
+		});
 	});
 
 

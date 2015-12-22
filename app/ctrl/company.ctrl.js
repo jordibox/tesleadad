@@ -8,12 +8,15 @@ var PickCtrl = require(C.ctrl+"pick.ctrl");
 var CategoryCtrl = require(C.ctrl+"category.ctrl");
 var ServiceNameModel = require(C.models+"service_name");
 var CategoryModel = require(C.models+"category");
+var PickModel = require(C.models+"pick");
+var AuthCtrl = require(C.ctrl + "auth.ctrl");
 var async = require("async");
 var Controller = {};
 
 Controller.newCompany = function (body, cb) {
 	if (!body || !body.cif || !body.name || !body.category || !body.email) return cb("Fields not Filled");
 	var company = new CompanyModel(body);
+    company.registerDate=new Date();
 
 	company.save(function (err, result) {
 		if (err) return cb(err);
@@ -102,15 +105,84 @@ Controller.findById = function(id, cb){
 				});
 			}
 		],function(err, result){
-			if(err) return next(err);
+			if(err) return cb(err);
 			cb(null, result);
 		});
-
-
-
-		
 	});
 };
+
+Controller.modify = function (id, body, cb) {
+
+    if (!body || !id)
+        return cb("Fields not filled");
+
+    CompanyModel.modify(id, body, function (err) {
+        if (err) return cb(err);
+        cb();
+    });
+}
+
+Controller.delete = function (id, cb) {
+
+    if (!id) return cb("Fields not Filled");
+
+    async.waterfall([
+        function getCompany(next) {
+            CompanyModel.findOne({ _id: id }, function (err, company) {
+
+                if (err) return next(err);
+
+                if (!company)
+                    return next(null, "No Company");
+
+
+                next(null, company);
+
+            });
+        }, function getPicks(company, next){
+            PickModel.find({id_company:company._id}, function(err, picks){
+               next(null, company, picks); 
+            });
+            
+        },function deletePicks(company, picks, next){
+            
+            if(picks &&picks.length>0){
+               async.eachSeries(picks, function iterator(item, n){
+                   item.remove(function(){
+                       n();
+                   });
+                   
+               }, function done(){
+                   next(null, company);
+               })
+            }
+            
+            
+        },function unableAccess(company, next) {
+
+            AuthCtrl.UnableAccess(company.email, function (err) {
+                if (err) return next(err);
+                next(null, company);
+            });
+
+        }, function deleteCompany(company, next) {
+            company.remove(function (err) {
+                if(err)return next();
+                    next();
+            });
+        }
+
+    ], function (err, data) {
+        if (err) return cb(err);
+        cb(null, "Company deleted");
+    });
+
+
+}
+
+
+
+
 
 Controller.newReview = function(user, body, cb){
 	if (!body || !body.company_id || !body.rating ) return cb("Fields not Filled");

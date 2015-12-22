@@ -11,6 +11,7 @@ router.route("")
 		CustomerCtrl.newUser(req.body, function (err, user) { //contenido del POST, function(error, return de newUser)
 			if (err) Response.printError(res, err);
 			else {
+                req.showUser=user;
 				req.user = user._id;
 				next();
 			}
@@ -23,7 +24,7 @@ router.route("")
 				Response.printError(res, err)
 			}
 			else
-				Response.printSuccess(res, "data", "Register Successfully");
+				Response.printSuccess(res, "customer", req.showUser);
 		});
 	}
 		)

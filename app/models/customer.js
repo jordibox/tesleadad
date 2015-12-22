@@ -329,7 +329,7 @@ CustomerSchema.statics={
 			if(err) return cb(err);
 
 		    if(!customer)
-				return cb("Category not found");
+				return cb("Customer not found");
 
 			for(var key in params){
 				customer[key] = params[key];

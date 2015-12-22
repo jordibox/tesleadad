@@ -138,6 +138,30 @@ CompanySchema.statics={
 		
 		query.exec(cb);	
 	},
+    
+   modify:function(id, params, cb){
+        this.findById(id, function(err, company){
+			if(err) return cb(err);
+
+		    if(!company)
+				return cb("Company not found");
+
+			for(var key in params){
+				company[key] = params[key];
+			}
+			
+			company.lastUpdate=new Date();
+		
+			company.save(function(err){
+				if(err) return cb(err);				
+				cb();
+			});
+
+		});
+    },
+    
+    
+    
 
 	newReview: function(user, params, cb){
 		this.findOneAndUpdate({_id: params.company_id},  {$addToSet:{review:{id_customer: user}}}, {safe:true, upsert:true, new:true},  function(err, company){
