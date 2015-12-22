@@ -75,7 +75,10 @@ var CompanySchema = new Schema({
 		required: true
 	}, 
 	description: String,
-	photos: [String],
+	images: [{
+		src:String,
+		alt:String
+	}],
 	phone: [String],
 	keywords: [String],
 	locations:[{

@@ -40,7 +40,7 @@ Controller.search = function(query, cb){
 						.select('name duration keywords description')
 						.exec(function(err, service_name){
 							if(err) return next(err);	
-							service["id_name"]=service_name;				
+							service.default=service_name;				
 							next(null, service);
 						});
 					},function(err, result){
@@ -51,10 +51,10 @@ Controller.search = function(query, cb){
 				},
 				function(comp, callback){
 					CategoryModel.findById(comp.category)
-					.select('name description')
+					.select('name description color')
 					.exec(function(err, category){
 						if(err) return callback(err);
-						comp.category = category;
+						comp.category_metadata = category;
 						callback(null, comp);
 					});
 				}
@@ -86,7 +86,7 @@ Controller.findById = function(id, cb){
 					.select('name duration keywords description')
 					.exec(function(err, service_name){
 						if(err) return next(err);	
-						service["id_name"]=service_name;				
+						service.default=service_name;				
 						next(null, service);
 					});
 				},function(err, result){
@@ -100,7 +100,7 @@ Controller.findById = function(id, cb){
 				.select('name description')
 				.exec(function(err, category){
 					if(err) return callback(err);
-					comp.category = category;
+					comp.category_metadata = category;
 					callback(null, comp);
 				});
 			}

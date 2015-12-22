@@ -16,7 +16,8 @@ var CategorySchema = new Schema({
 	image: {
 		src:String,
 		alt:String
-	}
+	}, 
+    color:String
 });
 
 
