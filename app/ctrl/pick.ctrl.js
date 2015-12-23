@@ -56,7 +56,7 @@ Controller.search = function (query, cb) {
 
                     CompanyModel.findServiceById(p.company._id, p.service, function (err, service) {
                         //if(err) return callback(err);
-                        console.log(service);
+                      
                         if (service) {
                           
                             var s = service.toObject();          
