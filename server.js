@@ -1,6 +1,6 @@
 var express = require("express");
 var C = require("./config/config.js");
-
+var SystemModel=require(C.model+"system");
 
 var app = express();
 //Configuracion
@@ -10,13 +10,16 @@ app.set('port', port);
 
 
 require(C.routes + "routes.js")(app);
-require(C.config + "database.js")(
+
+var db=require(C.config + "database.js");
+
+db(
     function () {
         app.listen(port, function () {
             console.log("Conectado: " + app.get("port"));
         });
     }
-    );
+);
 
 
 

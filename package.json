@@ -12,10 +12,13 @@
     "bower": "1.6.8",
     "cors": "2.7.1",
     "express": "4.0.0",
+    "google-auth-library": "0.9.7",
+    "googleapis": "2.1.7",
     "jsonwebtoken": "5.4.1",
     "method-override": "1.0.2",
     "mongoose": "4.2.2",
-    "morgan": "1.0.1"
+    "morgan": "1.0.1",
+    "readline": "1.2.1"
   },
   "devDependencies": {},
   "scripts": {
