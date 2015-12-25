@@ -1,6 +1,5 @@
 var express = require("express");
 var C = require("./config/config.js");
-var SystemModel=require(C.model+"system");
 
 var app = express();
 //Configuracion

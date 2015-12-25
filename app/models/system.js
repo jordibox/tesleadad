@@ -8,7 +8,7 @@ var OAuth2Client = google.auth.OAuth2;
 
 var SystemSchema = new Schema({
 
-    cdn:{}
+    drive:{}
 
 });
 
@@ -16,6 +16,7 @@ var SystemSchema = new Schema({
 SystemSchema.statics = {
 
     getDriveClient:function(cb){
+        var self=this;
 
         this.findOne({}, function(err, system){
             if(err)return cb(err);
@@ -24,7 +25,7 @@ SystemSchema.statics = {
             var oauth2Client = new OAuth2Client(result.CLIENT_ID, result.CLIENT_SECRET, result.REDIRECT_URL);
             oauth2Client.setCredentials(result.token);
 
-            this.refreshTokens(oauth2Client, system, function(err, oauth){
+            self.refreshTokens(oauth2Client, system, function(err, oauth){
                 if(err)return cb(err);
                 cb(null, google.drive({ version: 'v2', auth: oauth }));
             });

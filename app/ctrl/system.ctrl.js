@@ -74,4 +74,12 @@ Controller.deleteServiceName=function(id, cb){
 Controller.getServiceNameById=function(id, cb){
 	ServiceCtrl.findServiceNameById(id, cb);
 }
+
+Controller.uploadImage=function(type, data, cb){
+    console.log(type);
+    console.log(data);
+    cb(null, "goodl");
+}
+
+
 module.exports=Controller;

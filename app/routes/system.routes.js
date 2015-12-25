@@ -133,8 +133,18 @@ router.route("/category/:id")
 			if (err) Response.printError(res, err);
 			else
 				Response.printSuccess(res, "categories", "Category deleted");
-		})
+		});
 	});
+    
+    
+    router.route("/image/:type")
+    .post(AuthController.checkAccess(5), function(req, res){
+        SystemCtrl.uploadImage(req.params.type, req.body, function (err, image) {
+			if (err) Response.printError(res, err);
+			else
+				Response.printSuccess(res, "image", image);
+		});
+    });
 
 	
 module.exports = router;

@@ -14,9 +14,9 @@ module.exports = function (app) {
     app.use(morgan('dev'));
 
     //Permite cambiar el html con el método POST
-    app.use(bodyParser.urlencoded({ extended: false })); //parse x-www-form-urlencoded
+    app.use(bodyParser.urlencoded({ extended: false, limit:"5mb" })); //parse x-www-form-urlencoded
 
-    app.use(bodyParser.json()); //parsea json;
+    app.use(bodyParser.json({limit:"5mb"})); //parsea json;
 
     //Simula delete y put
     app.use(methodOverride());
