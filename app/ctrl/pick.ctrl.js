@@ -80,7 +80,7 @@ Controller.search = function (query, cb) {
                 },
                 function (p, callback) {
                     CategoryModel.findById(p.company.category)
-                        .select('name description')
+                        .select('name description icon image color')
                         .exec(function (err, category) {
                             if (err) return callback(err);
 
