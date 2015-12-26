@@ -18,7 +18,8 @@
     "method-override": "1.0.2",
     "mongoose": "4.2.2",
     "morgan": "1.0.1",
-    "readline": "1.2.1"
+    "readline": "1.2.1",
+    "request": "2.67.0"
   },
   "devDependencies": {},
   "scripts": {

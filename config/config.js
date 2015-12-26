@@ -24,6 +24,7 @@ var config = Object.create(Config.prototype, {
     routes: secure_path("app/routes/"),
     lib:secure_path("app/lib/"),
     models:secure_path("app/models/"),
+    temp:secure_path("temp/"),
     ctrl:secure_path("app/ctrl/"),
 	secret:secure(process.env.secret)
 });

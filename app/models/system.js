@@ -27,7 +27,11 @@ SystemSchema.statics = {
 
             self.refreshTokens(oauth2Client, system, function(err, oauth){
                 if(err)return cb(err);
-                cb(null, google.drive({ version: 'v2', auth: oauth }));
+                var client={
+                    drive:google.drive({ version: 'v2', auth: oauth }),
+                    hostname:result.path
+                }
+                cb(null, client);
             });
 
 
