@@ -17,6 +17,10 @@ var CategorySchema = new Schema({
 		src:String,
 		alt:String
 	}, 
+    icon:{
+        src:String,
+        alt:String
+    },
     color:String
 });
 
@@ -36,13 +40,16 @@ CategorySchema.statics={
 
 		    if(!category)
 				return cb("Category not found");
-
+          
 			for(var key in params){
 				category[key] = params[key];
 			}
+            
+           
 
-			category.save(function(err){
-				if(err) return cb(err);				
+			category.save(function(err, result){
+				if(err) return cb(err);			
+               
 				cb();
 			});
 
