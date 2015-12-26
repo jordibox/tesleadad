@@ -52,7 +52,7 @@ Controller.search = function(query, cb){
 				},
 				function(comp, callback){
 					CategoryModel.findById(comp.category)
-					.select('name description color')
+					.select('name description color icon image')
 					.exec(function(err, category){
 						if(err) return callback(err);
 						comp.category_metadata = category;
