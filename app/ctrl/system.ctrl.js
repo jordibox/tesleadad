@@ -83,7 +83,7 @@ Controller.getServiceNameById = function (id, cb) {
 Controller.uploadImage = function (type, image, cb) {
     var img = {};
     img.filename = Utils.generateID();
-
+    img.temp =  Utils.generateID();
 
 
     async.waterfall([function download(next) {
@@ -92,8 +92,8 @@ Controller.uploadImage = function (type, image, cb) {
             case "url": {
                 img.ext = path.extname(image.url);
                 img.filename += img.ext;
-              
-                Utils.download(image.url, img.filename, function (mimeType) {
+                img.temp += img.ext;
+                Utils.download(image.url, img.temp, function (mimeType) {
                     img.mimeType = mimeType;
                     next(null, img);
                 });
@@ -103,9 +103,9 @@ Controller.uploadImage = function (type, image, cb) {
             case "data": {
                 img.ext = path.extname(image.filename);
                 img.filename += img.ext;
-             
+                img.temp += img.ext;
                 var buffer = new Buffer(image.base64, 'base64');
-                fs.writeFile(img.filename, buffer, function (err) {
+                fs.writeFile(img.temp, buffer, function (err) {
                     if (err) return next(err);
                     img.mimeType = image.filetype;
                     next(null, img);
@@ -142,7 +142,7 @@ Controller.uploadImage = function (type, image, cb) {
             }, function (err) {
                 if(err)return next(err);
                 var url=client.hostname+img.filename;
-                 fs.unlink(img.filename);
+                 fs.unlink(img.temp);
                 next(null, url);
             });
 
