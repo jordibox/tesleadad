@@ -142,7 +142,10 @@ Controller.uploadImage = function (type, image, cb) {
             }, function (err) {
                 if(err)return next(err);
                 var url=client.hostname+img.filename;
-                 fs.unlink(img.filename);
+                 fs.unlink(img.filename, function(){
+					 console.log(__dirname);
+					 console.log(fs.readdirSync(__dirname));
+				 });
                 next(null, url);
             });
 
