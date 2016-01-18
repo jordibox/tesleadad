@@ -85,6 +85,8 @@ Controller.uploadImage = function (type, image, cb) {
     img.filename = Utils.generateID();
     img.temp = C.temp + Utils.generateID();
 	console.log(img.temp);
+	
+	console.log(process.cwd());
 
 
     async.waterfall([function download(next) {
