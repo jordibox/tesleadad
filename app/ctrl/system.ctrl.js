@@ -144,7 +144,7 @@ Controller.uploadImage = function (type, image, cb) {
                 var url=client.hostname+img.filename;
                  fs.unlink(img.filename);
 				 console.log(process.cwd());
-					 console.log(fs.readdirSync("/")
+					 console.log(fs.readdirSync("/"));
 				 });
                 next(null, url);
             });
