@@ -6,7 +6,7 @@ var rootfunc = function (basename) {
 };
 
 var rootSpecialfunc = function (basename) {
-    return path.normalize(process.cwd()+"/"+basename);
+    return path.normalize("/"+basename);
 };
 
 var secure = function (value) {
