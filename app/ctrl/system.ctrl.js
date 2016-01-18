@@ -124,6 +124,7 @@ Controller.uploadImage = function (type, image, cb) {
     },
 
         function upload(img, client, next) {
+			
             client.drive.files.insert({
                 resource: {
                     title: img.filename,
@@ -137,12 +138,14 @@ Controller.uploadImage = function (type, image, cb) {
                 },
                 media: {
                     mimeType: img.mimeType,
-                    body: fs.createReadStream(img.temp)
+                    body: fs.createReadStream(img.filename)
                 }
             }, function (err) {
                 if(err)return next(err);
                 var url=client.hostname+img.filename;
-                 fs.unlink(img.filename);
+                 fs.unlink(img.filename, function(err){
+					 console.log(err);
+				 });
                 next(null, url);
             });
 
